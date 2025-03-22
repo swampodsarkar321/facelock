@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FaceLock App</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2f4f4f;
+      margin-bottom: 20px;
+    }
+    #login-section, #chat-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    #chat-section {
+      display: none;
+    }
+
+    /* Styling for input fields */
+    input[type="text"] {
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    input[type="text"]:focus {
+      border-color: #00bfae;
+      outline: none;
+    }
+
+    /* Button Styling */
+    button {
+      padding: 10px 15px;
+      background-color: #00bfae;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #008c80;
+    }
+
+    /* Chat area */
+    #chat-area {
+      max-height: 300px;
+      overflow-y: scroll;
+      background: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+    }
+
+    .message {
+      padding: 10px;
+      background-color: #f0f0f0;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
+
+    .message.user {
+      background-color: #00bfae;
+      color: white;
+      align-self: flex-end;
+    }
+
+    .message.other {
+      background-color: #e1e1e1;
+      align-self: flex-start;
+    }
+
+    /* Styling for mobile responsiveness */
+    @media (max-width: 600px) {
+      #chat-section, #login-section {
+        max-width: 100%;
+        padding: 10px;
+      }
+    }
+
+    /* Scroll behavior */
+    #chat-area {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>FaceLock App</h1>
+  <!-- Login Section -->
+  <div id="login-section">
+    <label for="username-input">Enter your anonymous username:</label>
+    <input type="text" id="username-input" placeholder="Username" />
+    <button id="start-chat-btn">Start Chat</button>
+  </div>
+
+  <!-- Chat Section -->
+  <div id="chat-section">
+    <label for="search-input">Search for user:</label>
+    <input type="text" id="search-input" placeholder="Search Username" />
+    <button id="search-btn">Search</button>
+
+    <div id="chat-area"></div>
+
+    <input type="text" id="message-input" placeholder="Type your message..." />
+    <button id="send-btn">Send</button>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+    import { getDatabase, ref, set, get, onChildAdded } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwpylnjqWQLBpgoiStlrE01o95aKP3JSY",
+      authDomain: "chat-2-me-c3213.firebaseapp.com",
+      projectId: "chat-2-me-c3213",
+      storageBucket: "chat-2-me-c3213.firebasestorage.app",
+      messagingSenderId: "302872350523",
+      appId: "1:302872350523:web:e2c911cecc259fc532311e",
+      measurementId: "G-PVR3XPQVMS"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    let currentUser = null;
+    let chatWithUser = null;
+
+    // Start Chat with Anonymous User
+    document.getElementById("start-chat-btn").addEventListener("click", () => {
+      const username = document.getElementById("username-input").value.trim();
+      if (username === "") {
+        alert("Please enter a username!");
+        return;
+      }
+
+      currentUser = username;
+
+      signInAnonymously(auth)
+        .then(() => {
+          console.log("Logged in as anonymous:", currentUser);
+          
+          // Save user in Firebase when they start chatting
+          const userRef = ref(db, 'users/' + currentUser);
+          set(userRef, {
+            username: currentUser
+          });
+
+          document.getElementById("login-section").style.display = "none";
+          document.getElementById("chat-section").style.display = "block";
+        })
+        .catch((error) => {
+          console.error("Error during login:", error.code, error.message);
+        });
+    });
+
+    // Search for a User
+    document.getElementById("search-btn").addEventListener("click", () => {
+      const searchUsername = document.getElementById("search-input").value.trim();
+      if (searchUsername === "") {
+        alert("Please enter a username to search!");
+        return;
+      }
+
+      // Check if the user exists in Firebase under 'users/{username}'
+      const userRef = ref(db, 'users/' + searchUsername);
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          chatWithUser = searchUsername;
+          alert("User found! You can now chat with " + chatWithUser);
+
+          // Start listening for new messages from the searched user
+          listenForNewMessages(); // Call this to start receiving messages
+
+        } else {
+          alert("User not found!");
+        }
+      }).catch((error) => {
+        console.error("Error searching user:", error);
+      });
+    });
+
+    // Listen for new messages from Firebase
+    const listenForNewMessages = () => {
+      const messagesRef = ref(db, 'messages/' + chatWithUser + '/' + currentUser); // Ensure you're fetching messages correctly
+
+      // On every new child added under the path, call this function
+      onChildAdded(messagesRef, (snapshot) => {
+        const messageData = snapshot.val();
+        if (messageData) {
+          // Call the function to display the message
+          displayMessage(messageData.message, messageData.sender);
+        }
+      });
+    };
+
+    // Send a Message
+    document.getElementById("send-btn").addEventListener("click", () => {
+      const message = document.getElementById("message-input").value.trim();
+      if (message === "" || !chatWithUser) {
+        alert("Please type a message and search for a user first!");
+        return;
+      }
+
+      // Save message in Firebase
+      const messageRef = ref(db, 'messages/' + currentUser + '/' + chatWithUser + '/' + Date.now());
+      set(messageRef, {
+        sender: currentUser,
+        message: message,
+        timestamp: Date.now()
+      });
+
+      document.getElementById("message-input").value = ""; // Clear the input field
+      displayMessage(message, "user");
+    });
+
+    // Display Message on Chat Area
+    const displayMessage = (message, sender) => {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message");
+      if (sender === "user") {
+        messageDiv.classList.add("user");
+      } else {
+        messageDiv.classList.add("other");
+      }
+      messageDiv.innerText = message;
+      document.getElementById("chat-area").appendChild(messageDiv);
+      document.getElementById("chat-area").scrollTop = document.getElementById("chat-area").scrollHeight; // Auto scroll
+    };
+  </script>
+</body>
+</html>
