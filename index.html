@@ -3,21 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FaceLock </title>
+  <title>FaceLock Messenger</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
-      --primary: #1877f2; /* Facebook blue */
-      --primary-dark: #166fe5;
-      --secondary: #f0f2f5;
+      --primary: #00bfae;
+      --primary-dark: #008c80;
+      --secondary: #f7f7f7;
       --white: #ffffff;
-      --text: #1c1e21;
-      --text-light: #65676b;
-      --shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      --text: #2f4f4f;
+      --text-light: #666;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       --error: #ff5252;
-      --success: #42b72a;
-      --divider: #dadde1;
+      --success: #4caf50;
     }
     
     * {
@@ -36,7 +35,7 @@
     
     h1 {
       text-align: center;
-      color: var(--primary);
+      color: var(--primary-dark);
       margin-bottom: 30px;
       font-size: 28px;
     }
@@ -46,10 +45,9 @@
       margin: 0 auto;
       width: 100%;
       background: var(--white);
-      border-radius: 8px;
+      border-radius: 12px;
       box-shadow: var(--shadow);
       overflow: hidden;
-      height: 80vh;
     }
     
     /* Login Section */
@@ -74,16 +72,14 @@
     input[type="text"], textarea {
       padding: 12px 15px;
       font-size: 16px;
-      border: 1px solid #dddfe2;
-      border-radius: 6px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
       transition: border 0.3s;
-      background-color: var(--white);
     }
     
     input[type="text"]:focus, textarea:focus {
       border-color: var(--primary);
       outline: none;
-      box-shadow: 0 0 0 2px #e7f3ff;
     }
     
     button {
@@ -91,9 +87,9 @@
       background-color: var(--primary);
       color: var(--white);
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
     }
@@ -109,9 +105,8 @@
     /* Navigation Tabs */
     .nav-tabs {
       display: flex;
-      background: var(--white);
-      color: var(--text-light);
-      border-bottom: 1px solid var(--divider);
+      background: var(--primary);
+      color: white;
     }
     
     .nav-tab {
@@ -119,23 +114,11 @@
       text-align: center;
       padding: 15px;
       cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
+      transition: background 0.3s;
     }
     
     .nav-tab.active {
-      color: var(--primary);
-      font-weight: 600;
-    }
-    
-    .nav-tab.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background-color: var(--primary);
+      background: var(--primary-dark);
     }
     
     .nav-tab i {
@@ -145,7 +128,7 @@
     /* Page Container */
     .page-container {
       display: none;
-      height: calc(100% - 56px);
+      height: 70vh;
       flex-direction: column;
     }
     
@@ -156,12 +139,11 @@
     /* Header */
     .page-header {
       padding: 15px 20px;
-      background: var(--white);
-      color: var(--text);
+      background: var(--primary);
+      color: var(--white);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--divider);
     }
     
     .page-header-info {
@@ -174,12 +156,11 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: linear-gradient(45deg, #1877f2, #42b72a);
+      background: rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
-      color: white;
+      font-weight: 500;
     }
     
     /* News Feed Page */
@@ -197,7 +178,6 @@
       border-radius: 8px;
       box-shadow: var(--shadow);
       overflow: hidden;
-      border: 1px solid var(--divider);
     }
     
     .post-header {
@@ -205,10 +185,11 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      border-bottom: 1px solid #eee;
     }
     
     .post-user {
-      font-weight: 600;
+      font-weight: 500;
     }
     
     .post-time {
@@ -218,13 +199,12 @@
     
     .post-content {
       padding: 15px;
-      padding-top: 0;
     }
     
     .post-actions {
       padding: 10px 15px;
       display: flex;
-      border-top: 1px solid var(--divider);
+      border-top: 1px solid #eee;
     }
     
     .post-action {
@@ -234,13 +214,10 @@
       cursor: pointer;
       color: var(--text-light);
       transition: color 0.3s;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 14px;
     }
     
     .post-action:hover {
-      background-color: rgba(0, 0, 0, 0.05);
+      color: var(--primary);
     }
     
     .post-action.active {
@@ -250,87 +227,59 @@
     .post-comments {
       padding: 0 15px 15px;
       display: none;
-      background-color: #f0f2f5;
-      border-top: 1px solid var(--divider);
     }
     
     .comment {
       display: flex;
-      margin-top: 10px;
+      margin-bottom: 10px;
     }
     
     .comment-avatar {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      background: linear-gradient(45deg, #1877f2, #42b72a);
+      background: #e0e0e0;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 500;
       margin-right: 10px;
       flex-shrink: 0;
-      color: white;
-      font-size: 14px;
     }
     
     .comment-content {
+      background: #f5f5f5;
+      padding: 8px 12px;
+      border-radius: 12px;
       flex-grow: 1;
     }
     
-    .comment-header {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    
     .comment-user {
-      font-weight: 600;
-      font-size: 13px;
-    }
-    
-    .comment-time {
-      font-size: 11px;
-      color: var(--text-light);
+      font-weight: 500;
+      font-size: 14px;
     }
     
     .comment-text {
       font-size: 14px;
-      background-color: var(--white);
-      padding: 8px 12px;
-      border-radius: 18px;
-      display: inline-block;
-      max-width: 100%;
-      word-wrap: break-word;
     }
     
     .add-comment {
       display: flex;
       margin-top: 10px;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .add-comment .user-avatar {
-      width: 32px;
-      height: 32px;
-      font-size: 14px;
     }
     
     .add-comment input {
       flex-grow: 1;
       padding: 8px 12px;
-      border: none;
+      border: 1px solid #e0e0e0;
       border-radius: 18px;
       font-size: 14px;
-      background-color: var(--white);
     }
     
     .add-comment button {
+      margin-left: 8px;
       padding: 8px 12px;
       font-size: 14px;
-      background-color: var(--primary);
-      border-radius: 18px;
     }
     
     .create-post {
@@ -339,16 +288,12 @@
       border-radius: 8px;
       box-shadow: var(--shadow);
       margin-bottom: 15px;
-      border: 1px solid var(--divider);
     }
     
     .create-post textarea {
       width: 100%;
       margin-bottom: 10px;
       resize: none;
-      border: 1px solid var(--divider);
-      border-radius: 6px;
-      min-height: 80px;
     }
     
     /* Messenger Page */
@@ -358,98 +303,27 @@
       height: 100%;
     }
     
-    .conversations-list {
-      flex: 1;
-      overflow-y: auto;
-      border-bottom: 1px solid var(--divider);
+    .search-container {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      position: relative;
     }
     
-    .conversation {
-      display: flex;
-      align-items: center;
-      padding: 12px 15px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+    .search-input {
+      position: relative;
     }
     
-    .conversation:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-    
-    .conversation.active {
-      background-color: #e7f3ff;
-    }
-    
-    .conversation-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(45deg, #1877f2, #42b72a);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 500;
-      color: white;
-      margin-right: 10px;
-    }
-    
-    .conversation-info {
-      flex: 1;
-    }
-    
-    .conversation-name {
-      font-weight: 600;
-    }
-    
-    .conversation-preview {
-      font-size: 13px;
+    .search-input i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
       color: var(--text-light);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
     
-    .chat-container {
-      display: none;
-      flex-direction: column;
-      height: 100%;
-    }
-    
-    .chat-container.active {
-      display: flex;
-    }
-    
-    .chat-header {
-      padding: 12px 15px;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid var(--divider);
-    }
-    
-    .chat-header-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(45deg, #1877f2, #42b72a);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 500;
-      color: white;
-      margin-right: 10px;
-    }
-    
-    .chat-header-info {
-      flex: 1;
-    }
-    
-    .chat-header-name {
-      font-weight: 600;
-    }
-    
-    .chat-header-status {
-      font-size: 12px;
-      color: var(--text-light);
+    .search-input input {
+      padding-left: 40px;
+      width: 100%;
     }
     
     #chat-area {
@@ -459,17 +333,16 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      background-color: #f0f2f5;
+      background: url('https://transparenttextures.com/patterns/light-wool.png');
     }
     
     .message {
-      padding: 8px 12px;
+      padding: 12px 16px;
       border-radius: 18px;
       max-width: 75%;
       position: relative;
       animation: fadeIn 0.3s ease;
       word-wrap: break-word;
-      font-size: 14px;
     }
     
     @keyframes fadeIn {
@@ -488,7 +361,7 @@
       background-color: var(--white);
       align-self: flex-start;
       border-bottom-left-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
     
     .message-time {
@@ -504,7 +377,7 @@
     
     .message-input-container {
       padding: 15px;
-      border-top: 1px solid var(--divider);
+      border-top: 1px solid #eee;
       background: var(--white);
     }
     
@@ -517,19 +390,55 @@
     .message-input input {
       flex: 1;
       padding: 12px 15px;
-      border-radius: 18px;
-      border: none;
-      background-color: #f0f2f5;
     }
     
     .send-btn {
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0;
+    }
+    
+    /* Search Results */
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      display: none;
+    }
+    
+    .user-result {
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .user-result:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .user-result-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
     }
     
     /* Friends Page */
@@ -547,7 +456,6 @@
       border-radius: 8px;
       box-shadow: var(--shadow);
       margin-bottom: 10px;
-      border: 1px solid var(--divider);
     }
     
     .friend-info {
@@ -556,13 +464,7 @@
     }
     
     .friend-name {
-      font-weight: 600;
-    }
-    
-    .friend-mutual {
-      font-size: 13px;
-      color: var(--text-light);
-      margin-top: 2px;
+      font-weight: 500;
     }
     
     .friend-actions {
@@ -571,11 +473,10 @@
     }
     
     .friend-action {
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 6px 12px;
+      border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 600;
     }
     
     .accept-btn {
@@ -584,8 +485,8 @@
     }
     
     .reject-btn {
-      background: #e4e6eb;
-      color: var(--text);
+      background: var(--error);
+      color: white;
     }
     
     /* Status Messages */
@@ -639,7 +540,7 @@
     .empty-icon {
       font-size: 60px;
       margin-bottom: 15px;
-      color: #e4e6eb;
+      color: #e0e0e0;
     }
     
     /* Responsive */
@@ -650,7 +551,6 @@
       
       .container {
         border-radius: 8px;
-        height: 90vh;
       }
       
       #login-section {
@@ -660,7 +560,7 @@
   </style>
 </head>
 <body>
-  <h1>FaceLock</h1>
+  <h1>FaceLock Messenger</h1>
   
   <div class="container">
     <!-- Login Section -->
@@ -680,10 +580,10 @@
       <!-- Navigation Tabs -->
       <div class="nav-tabs">
         <div class="nav-tab active" data-page="news-feed-page">
-          <i class="fas fa-newspaper"></i> Feed
+          <i class="fas fa-newspaper"></i> News Feed
         </div>
         <div class="nav-tab" data-page="messenger-page">
-          <i class="fas fa-comments"></i> Chats
+          <i class="fas fa-comments"></i> Messenger
         </div>
         <div class="nav-tab" data-page="friends-page">
           <i class="fas fa-user-friends"></i> Friends
@@ -696,7 +596,7 @@
           <div class="user-avatar" id="current-user-avatar">U</div>
           <span id="current-username">Anonymous</span>
         </div>
-        <button id="logout-btn" style="background: none; border: none; color: var(--text); cursor: pointer;">
+        <button id="logout-btn" style="background: none; border: none; color: white; cursor: pointer;">
           <i class="fas fa-sign-out-alt"></i>
         </button>
       </div>
@@ -707,7 +607,7 @@
           <div class="create-post">
             <textarea id="post-content" placeholder="What's on your mind?"></textarea>
             <button id="post-btn" style="width: 100%;">
-              <i class="fas fa-share-square" style="margin-right: 8px;"></i> Post
+              <i class="fas fa-share-square"></i> Post
             </button>
           </div>
           
@@ -727,43 +627,30 @@
       <!-- Messenger Page -->
       <div id="messenger-page" class="page-container">
         <div class="page-content">
-          <div class="conversations-list" id="conversations-list">
-            <!-- Conversations will be loaded here -->
+          <div class="search-container">
+            <div class="search-input">
+              <i class="fas fa-search"></i>
+              <input type="text" id="search-input" placeholder="Search for a user..." />
+            </div>
+            <div class="search-results" id="search-results"></div>
+          </div>
+          
+          <div id="chat-area">
             <div class="empty-state">
               <div class="empty-icon">
                 <i class="far fa-comment-dots"></i>
               </div>
-              <h3>No conversations</h3>
-              <p>Start chatting with your friends</p>
+              <h3>No active chat</h3>
+              <p>Search for a user to start chatting</p>
             </div>
           </div>
           
-          <div class="chat-container" id="chat-container">
-            <div class="chat-header">
-              <div class="chat-header-avatar" id="chat-header-avatar">U</div>
-              <div class="chat-header-info">
-                <div class="chat-header-name" id="chat-header-name">User</div>
-                <div class="chat-header-status" id="chat-header-status">Online</div>
-              </div>
-            </div>
-            
-            <div id="chat-area">
-              <div class="empty-state">
-                <div class="empty-icon">
-                  <i class="far fa-comment-dots"></i>
-                </div>
-                <h3>No messages yet</h3>
-                <p>Send a message to start the conversation</p>
-              </div>
-            </div>
-            
-            <div class="message-input-container">
-              <div class="message-input">
-                <input type="text" id="message-input" placeholder="Type a message..." disabled />
-                <button class="send-btn" id="send-btn" disabled>
-                  <i class="fas fa-paper-plane"></i>
-                </button>
-              </div>
+          <div class="message-input-container">
+            <div class="message-input">
+              <input type="text" id="message-input" placeholder="Type your message..." disabled />
+              <button class="send-btn" id="send-btn" disabled>
+                <i class="fas fa-paper-plane"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -839,11 +726,8 @@
     const postsContainer = document.getElementById("posts-container");
     
     // Messenger Elements
-    const conversationsList = document.getElementById("conversations-list");
-    const chatContainer = document.getElementById("chat-container");
-    const chatHeaderAvatar = document.getElementById("chat-header-avatar");
-    const chatHeaderName = document.getElementById("chat-header-name");
-    const chatHeaderStatus = document.getElementById("chat-header-status");
+    const searchInput = document.getElementById("search-input");
+    const searchResults = document.getElementById("search-results");
     const chatArea = document.getElementById("chat-area");
     const messageInput = document.getElementById("message-input");
     const sendBtn = document.getElementById("send-btn");
@@ -856,10 +740,10 @@
     let currentUser = null;
     let currentChatUser = null;
     let messageListener = null;
+    let searchTimeout = null;
     let postsListener = null;
     let friendsListener = null;
     let friendRequestsListener = null;
-    let conversationsListener = null;
 
     // Check if user is already logged in
     onAuthStateChanged(auth, (user) => {
@@ -876,7 +760,6 @@
           loadPosts();
           loadFriendRequests();
           loadFriendsList();
-          loadConversations();
         }
       } else {
         // User is signed out
@@ -906,6 +789,7 @@
     });
     
     // Messenger Events
+    searchInput.addEventListener("input", handleSearch);
     messageInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") sendMessage();
     });
@@ -941,8 +825,7 @@
         // Save user in Firebase
         await set(ref(db, `users/${username}`), {
           username: username,
-          createdAt: Date.now(),
-          lastActive: Date.now()
+          createdAt: Date.now()
         });
         
         // Save username to localStorage
@@ -961,7 +844,6 @@
         loadPosts();
         loadFriendRequests();
         loadFriendsList();
-        loadConversations();
       } catch (error) {
         console.error("Error starting chat:", error);
         showError(error.message);
@@ -975,87 +857,93 @@
       return snapshot.exists();
     }
 
-    // Load Conversations
-    function loadConversations() {
-      if (!currentUser) return;
+    // Handle User Search
+    function handleSearch() {
+      clearTimeout(searchTimeout);
       
-      conversationsList.innerHTML = '<div class="spinner"></div>';
+      const searchTerm = searchInput.value.trim();
       
-      // Remove previous listener if exists
-      if (conversationsListener) {
-        conversationsListener();
+      if (!searchTerm) {
+        searchResults.style.display = "none";
+        return;
       }
       
-      const conversationsRef = ref(db, `userChats/${currentUser}`);
+      // Show loading state
+      searchResults.innerHTML = '<div class="spinner"></div>';
+      searchResults.style.display = "block";
       
-      conversationsListener = onValue(conversationsRef, (snapshot) => {
-        conversationsList.innerHTML = '';
-        
-        if (snapshot.exists()) {
-          const conversations = [];
+      // Debounce the search
+      searchTimeout = setTimeout(async () => {
+        try {
+          // Get all users
+          const usersSnapshot = await get(ref(db, 'users'));
+          const users = [];
           
-          snapshot.forEach((childSnapshot) => {
-            const chatId = childSnapshot.key;
-            const otherUser = chatId.replace(currentUser, '').replace('_', '');
-            const lastMessage = childSnapshot.val().lastMessage || '';
-            const timestamp = childSnapshot.val().timestamp || 0;
-            
-            conversations.push({
-              otherUser,
-              lastMessage,
-              timestamp
-            });
+          usersSnapshot.forEach((childSnapshot) => {
+            const username = childSnapshot.key;
+            if (username !== currentUser && username.toLowerCase().includes(searchTerm.toLowerCase())) {
+              users.push({
+                username: username,
+                createdAt: childSnapshot.val().createdAt
+              });
+            }
           });
           
-          // Sort by timestamp (newest first)
-          conversations.sort((a, b) => b.timestamp - a.timestamp);
+          // Sort by creation date (newest first)
+          users.sort((a, b) => b.createdAt - a.createdAt);
           
-          if (conversations.length > 0) {
-            conversations.forEach(conv => {
-              const convElement = document.createElement("div");
-              convElement.className = "conversation";
-              convElement.innerHTML = `
-                <div class="conversation-avatar">${conv.otherUser.charAt(0).toUpperCase()}</div>
-                <div class="conversation-info">
-                  <div class="conversation-name">${conv.otherUser}</div>
-                  <div class="conversation-preview">${formatLastMessage(conv.lastMessage)}</div>
-                </div>
+          // Display results
+          if (users.length > 0) {
+            searchResults.innerHTML = '';
+            users.forEach(user => {
+              const userElement = document.createElement("div");
+              userElement.className = "user-result";
+              userElement.innerHTML = `
+                <div class="user-result-avatar">${user.username.charAt(0).toUpperCase()}</div>
+                <div>${user.username}</div>
+                <button class="add-friend-btn" data-username="${user.username}" style="margin-left: auto; background: var(--primary); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 12px;">
+                  Add Friend
+                </button>
               `;
-              convElement.addEventListener("click", () => startChatWithUser(conv.otherUser));
-              conversationsList.appendChild(convElement);
+              userElement.addEventListener("click", () => startChatWithUser(user.username));
+              searchResults.appendChild(userElement);
+              
+              // Add event listener to the add friend button
+              const addFriendBtn = userElement.querySelector(".add-friend-btn");
+              addFriendBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                sendFriendRequest(user.username);
+              });
             });
           } else {
-            conversationsList.innerHTML = `
-              <div class="empty-state">
-                <div class="empty-icon">
-                  <i class="far fa-comment-dots"></i>
-                </div>
-                <h3>No conversations</h3>
-                <p>Start chatting with your friends</p>
-              </div>
-            `;
+            searchResults.innerHTML = '<div class="status-message">No users found</div>';
           }
-        } else {
-          conversationsList.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-icon">
-                <i class="far fa-comment-dots"></i>
-              </div>
-              <h3>No conversations</h3>
-              <p>Start chatting with your friends</p>
-            </div>
-          `;
+        } catch (error) {
+          console.error("Error searching users:", error);
+          searchResults.innerHTML = '<div class="error-message">Error searching users</div>';
         }
-      });
+      }, 300); // 300ms debounce delay
     }
 
-    // Format last message for preview
-    function formatLastMessage(message) {
-      if (!message) return "No messages yet";
-      if (message.length > 30) {
-        return message.substring(0, 30) + "...";
+    // Send Friend Request
+    async function sendFriendRequest(toUsername) {
+      try {
+        const requestId = `${currentUser}_${Date.now()}`;
+        
+        await set(ref(db, `friendRequests/${toUsername}/${requestId}`), {
+          from: currentUser,
+          to: toUsername,
+          status: "pending",
+          timestamp: Date.now()
+        });
+        
+        alert(`Friend request sent to ${toUsername}`);
+        searchResults.style.display = "none";
+        searchInput.value = "";
+      } catch (error) {
+        console.error("Error sending friend request:", error);
+        alert("Failed to send friend request");
       }
-      return message;
     }
 
     // Load Friend Requests
@@ -1093,13 +981,12 @@
               const requestElement = document.createElement("div");
               requestElement.className = "friend-request";
               requestElement.innerHTML = `
-                <div class="user-avatar">${request.from.charAt(0).toUpperCase()}</div>
+                <div class="user-result-avatar">${request.from.charAt(0).toUpperCase()}</div>
                 <div class="friend-info">
                   <div class="friend-name">${request.from}</div>
-                  <div class="friend-mutual">1 mutual friend</div>
                   <div class="friend-actions">
-                    <div class="friend-action accept-btn" data-request-id="${request.id}" data-from="${request.from}">Confirm</div>
-                    <div class="friend-action reject-btn" data-request-id="${request.id}">Delete</div>
+                    <div class="friend-action accept-btn" data-request-id="${request.id}" data-from="${request.from}">Accept</div>
+                    <div class="friend-action reject-btn" data-request-id="${request.id}">Reject</div>
                   </div>
                 </div>
               `;
@@ -1109,14 +996,8 @@
               const acceptBtn = requestElement.querySelector(".accept-btn");
               const rejectBtn = requestElement.querySelector(".reject-btn");
               
-              acceptBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                acceptFriendRequest(request.id, request.from);
-              });
-              rejectBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                rejectFriendRequest(request.id);
-              });
+              acceptBtn.addEventListener("click", () => acceptFriendRequest(request.id, request.from));
+              rejectBtn.addEventListener("click", () => rejectFriendRequest(request.id));
             });
           } else {
             friendRequestsContainer.innerHTML = `
@@ -1166,25 +1047,8 @@
           since: timestamp
         });
         
-        // Add to conversations for both users
-        const chatId = [currentUser, fromUsername].sort().join('_');
-        
-        await set(ref(db, `userChats/${currentUser}/${chatId}`), {
-          otherUser: fromUsername,
-          timestamp: timestamp
-        });
-        
-        await set(ref(db, `userChats/${fromUsername}/${chatId}`), {
-          otherUser: currentUser,
-          timestamp: timestamp
-        });
-        
-        // Reload friends list and conversations
+        // Reload friends list
         loadFriendsList();
-        loadConversations();
-        
-        // Show success message
-        alert(`You are now friends with ${fromUsername}`);
       } catch (error) {
         console.error("Error accepting friend request:", error);
         alert("Failed to accept friend request");
@@ -1232,10 +1096,9 @@
               const friendElement = document.createElement("div");
               friendElement.className = "friend-request";
               friendElement.innerHTML = `
-                <div class="user-avatar">${friend.username.charAt(0).toUpperCase()}</div>
+                <div class="user-result-avatar">${friend.username.charAt(0).toUpperCase()}</div>
                 <div class="friend-info">
                   <div class="friend-name">${friend.username}</div>
-                  <div class="friend-mutual">1 mutual friend</div>
                   <div class="friend-actions">
                     <div class="friend-action" style="background: var(--primary); color: white;" data-username="${friend.username}">Message</div>
                   </div>
@@ -1355,7 +1218,7 @@
               
               postElement.innerHTML = `
                 <div class="post-header">
-                  <div class="user-avatar">${post.author.charAt(0).toUpperCase()}</div>
+                  <div class="user-result-avatar">${post.author.charAt(0).toUpperCase()}</div>
                   <div>
                     <div class="post-user">${post.author}</div>
                     <div class="post-time">${formatTime(post.timestamp)}</div>
@@ -1477,10 +1340,7 @@
             commentElement.innerHTML = `
               <div class="comment-avatar">${comment.author.charAt(0).toUpperCase()}</div>
               <div class="comment-content">
-                <div class="comment-header">
-                  <div class="comment-user">${comment.author}</div>
-                  <div class="comment-time">${formatTime(comment.timestamp)}</div>
-                </div>
+                <div class="comment-user">${comment.author}</div>
                 <div class="comment-text">${comment.text}</div>
               </div>
             `;
@@ -1492,7 +1352,6 @@
         const addCommentDiv = document.createElement("div");
         addCommentDiv.className = "add-comment";
         addCommentDiv.innerHTML = `
-          <div class="user-avatar">${currentUser.charAt(0).toUpperCase()}</div>
           <input type="text" placeholder="Write a comment..." class="comment-input" />
           <button class="comment-submit">Post</button>
         `;
@@ -1546,33 +1405,21 @@
     // Format timestamp
     function formatTime(timestamp) {
       const date = new Date(timestamp);
-      const now = new Date();
-      const diff = now - date;
-      
-      if (diff < 60000) { // Less than 1 minute
-        return "Just now";
-      } else if (diff < 3600000) { // Less than 1 hour
-        const minutes = Math.floor(diff / 60000);
-        return `${minutes}m ago`;
-      } else if (diff < 86400000) { // Less than 1 day
-        const hours = Math.floor(diff / 3600000);
-        return `${hours}h ago`;
-      } else {
-        return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
-      }
+      return date.toLocaleString();
     }
 
     // Start Chat with Selected User
     function startChatWithUser(username) {
       currentChatUser = username;
+      searchInput.value = "";
+      searchResults.style.display = "none";
       
       // Update UI
-      chatHeaderAvatar.textContent = username.charAt(0).toUpperCase();
-      chatHeaderName.textContent = username;
-      chatHeaderStatus.textContent = "Online";
-      
-      // Show chat container
-      chatContainer.classList.add("active");
+      const chatHeader = document.querySelector(".chat-header-info");
+      chatHeader.innerHTML = `
+        <div class="user-avatar">${username.charAt(0).toUpperCase()}</div>
+        <span>Chatting with ${username}</span>
+      `;
       
       // Clear chat area
       chatArea.innerHTML = "";
@@ -1587,20 +1434,6 @@
       
       // Set up real-time listener
       setupMessageListener();
-      
-      // Update conversation as active in the list
-      updateActiveConversation(username);
-    }
-
-    // Update active conversation in the list
-    function updateActiveConversation(username) {
-      const conversations = document.querySelectorAll('.conversation');
-      conversations.forEach(conv => {
-        conv.classList.remove('active');
-        if (conv.querySelector('.conversation-name').textContent === username) {
-          conv.classList.add('active');
-        }
-      });
     }
 
     // Load Previous Messages
@@ -1659,16 +1492,6 @@
       messageListener = onChildAdded(messagesRef, (snapshot) => {
         const message = snapshot.val();
         displayMessage(message.text, message.sender === currentUser ? "user" : "other", message.timestamp);
-        
-        // Update conversation last message
-        const chatId = getChatId();
-        const conversationRef = ref(db, `userChats/${currentUser}/${chatId}`);
-        
-        set(conversationRef, {
-          otherUser: currentChatUser,
-          lastMessage: message.text,
-          timestamp: message.timestamp
-        });
       });
     }
 
@@ -1740,10 +1563,6 @@
       
       if (friendRequestsListener) {
         friendRequestsListener();
-      }
-      
-      if (conversationsListener) {
-        conversationsListener();
       }
       
       // Clear local storage
