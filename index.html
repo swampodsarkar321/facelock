@@ -18,6 +18,8 @@
       --error: #ff5252;
       --success: #42b72a;
       --divider: #dadde1;
+      --header-height: 56px;
+      --nav-height: 56px;
     }
     
     * {
@@ -30,26 +32,32 @@
     body {
       background-color: var(--secondary);
       color: var(--text);
-      padding: 20px;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     
     h1 {
       text-align: center;
       color: var(--primary);
-      margin-bottom: 30px;
+      margin: 15px 0;
       font-size: 28px;
+      padding: 0 15px;
     }
     
     .container {
-      max-width: 500px;
-      margin: 0 auto;
+      max-width: 100%;
       width: 100%;
       background: var(--white);
       border-radius: 8px;
       box-shadow: var(--shadow);
       overflow: hidden;
-      height: 80vh;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      max-width: 500px;
+      height: calc(100vh - 80px);
     }
     
     /* Login Section */
@@ -58,6 +66,8 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+      flex: 1;
+      justify-content: center;
     }
     
     .form-group {
@@ -112,6 +122,7 @@
       background: var(--white);
       color: var(--text-light);
       border-bottom: 1px solid var(--divider);
+      height: var(--nav-height);
     }
     
     .nav-tab {
@@ -121,6 +132,11 @@
       cursor: pointer;
       transition: all 0.3s;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
     }
     
     .nav-tab.active {
@@ -139,15 +155,17 @@
     }
     
     .nav-tab i {
-      margin-right: 8px;
+      margin-bottom: 4px;
+      font-size: 20px;
     }
     
     /* Page Container */
     .page-container {
       display: none;
-      height: calc(100% - 56px);
+      flex: 1;
       flex-direction: column;
       overflow-y: auto;
+      height: calc(100% - var(--header-height) - var(--nav-height));
     }
     
     .page-container.active {
@@ -156,13 +174,14 @@
     
     /* Header */
     .page-header {
-      padding: 15px 20px;
+      padding: 10px 15px;
       background: var(--white);
       color: var(--text);
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--divider);
+      height: var(--header-height);
     }
     
     .page-header-info {
@@ -803,6 +822,7 @@
       height: 100%;
       text-align: center;
       color: var(--text-light);
+      padding: 20px;
     }
     
     .empty-icon {
@@ -852,64 +872,6 @@
     
     .post-options-item.delete {
       color: var(--error);
-    }
-    
-    /* Responsive */
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      
-      .container {
-        border-radius: 8px;
-        height: 90vh;
-      }
-      
-      #login-section {
-        padding: 20px;
-      }
-      
-      .nav-tab {
-        padding: 12px 8px;
-        font-size: 14px;
-      }
-      
-      .nav-tab i {
-        margin-right: 5px;
-      }
-      
-      .profile-header {
-        height: 150px;
-      }
-      
-      .profile-picture-container {
-        width: 80px;
-        height: 80px;
-        bottom: -40px;
-      }
-      
-      .profile-info {
-        padding: 50px 15px 15px;
-      }
-      
-      .profile-name {
-        font-size: 20px;
-      }
-      
-      .profile-tab {
-        padding: 12px 8px;
-        font-size: 14px;
-      }
-      
-      .friend-actions {
-        flex-direction: column;
-        gap: 5px;
-      }
-      
-      .friend-action {
-        padding: 6px 8px;
-        font-size: 12px;
-      }
     }
     
     /* Add Friend Button */
@@ -1056,6 +1018,97 @@
       border-radius: 6px;
       resize: none;
       font-size: 14px;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 600px) {
+      .container {
+        border-radius: 0;
+        height: calc(100vh - 60px);
+        max-width: 100%;
+      }
+      
+      h1 {
+        font-size: 24px;
+        margin: 10px 0;
+      }
+      
+      #login-section {
+        padding: 20px;
+      }
+      
+      .nav-tab {
+        padding: 8px 5px;
+        font-size: 11px;
+      }
+      
+      .nav-tab i {
+        font-size: 18px;
+        margin-bottom: 2px;
+      }
+      
+      .profile-header {
+        height: 150px;
+      }
+      
+      .profile-picture-container {
+        width: 80px;
+        height: 80px;
+        bottom: -40px;
+      }
+      
+      .profile-info {
+        padding: 50px 15px 15px;
+      }
+      
+      .profile-name {
+        font-size: 20px;
+      }
+      
+      .profile-tab {
+        padding: 12px 8px;
+        font-size: 14px;
+      }
+      
+      .friend-actions {
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .friend-action {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+      
+      .post-actions {
+        padding: 8px 10px;
+      }
+      
+      .post-action {
+        font-size: 12px;
+        padding: 6px;
+      }
+      
+      .message {
+        max-width: 85%;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .container {
+        max-width: 800px;
+        height: 80vh;
+        margin: 20px auto;
+        border-radius: 8px;
+      }
+      
+      .nav-tab {
+        font-size: 14px;
+      }
+      
+      .nav-tab i {
+        margin-bottom: 5px;
+      }
     }
   </style>
 </head>
@@ -1502,6 +1555,13 @@
           const colors = ['#1877f2', '#42b72a', '#f5533d', '#f5a623', '#8e44ad'];
           const randomColor = colors[Math.floor(Math.random() * colors.length)];
           profileCover.style.backgroundColor = randomColor;
+          
+          // Check if user has a profile picture
+          get(ref(db, `users/${currentUser}/profilePicture`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              updateAvatarElements(currentUser, snapshot.val());
+            }
+          });
         }
       } else {
         // User is signed out
