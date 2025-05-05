@@ -3,143 +3,814 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FaceLock App</title>
+  <title>FaceLock Messenger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    :root {
+      --primary: #1877f2; /* Facebook blue */
+      --primary-dark: #166fe5;
+      --secondary: #f0f2f5;
+      --white: #ffffff;
+      --text: #1c1e21;
+      --text-light: #65676b;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      --error: #ff5252;
+      --success: #42b72a;
+      --divider: #dadde1;
+    }
+    
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: 'Poppins', sans-serif;
     }
+    
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f7f7f7;
-      color: #333;
+      background-color: var(--secondary);
+      color: var(--text);
       padding: 20px;
+      min-height: 100vh;
     }
+    
     h1 {
       text-align: center;
-      color: #2f4f4f;
-      margin-bottom: 20px;
+      color: var(--primary);
+      margin-bottom: 30px;
+      font-size: 28px;
     }
-    #login-section, #chat-section {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      max-width: 400px;
+    
+    .container {
+      max-width: 500px;
       margin: 0 auto;
       width: 100%;
+      background: var(--white);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      height: 80vh;
     }
-    #chat-section {
-      display: none;
-    }
-
-    /* Styling for input fields */
-    input[type="text"] {
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    input[type="text"]:focus {
-      border-color: #00bfae;
-      outline: none;
-    }
-
-    /* Button Styling */
-    button {
-      padding: 10px 15px;
-      background-color: #00bfae;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    button:hover {
-      background-color: #008c80;
-    }
-
-    /* Chat area */
-    #chat-area {
-      max-height: 300px;
-      overflow-y: scroll;
-      background: #fff;
-      padding: 15px;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      margin-bottom: 10px;
-    }
-
-    .message {
-      padding: 10px;
-      background-color: #f0f0f0;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      max-width: 70%;
-      word-wrap: break-word;
-    }
-
-    .message.user {
-      background-color: #00bfae;
-      color: white;
-      align-self: flex-end;
-    }
-
-    .message.other {
-      background-color: #e1e1e1;
-      align-self: flex-start;
-    }
-
-    /* Styling for mobile responsiveness */
-    @media (max-width: 600px) {
-      #chat-section, #login-section {
-        max-width: 100%;
-        padding: 10px;
-      }
-    }
-
-    /* Scroll behavior */
-    #chat-area {
+    
+    /* Login Section */
+    #login-section {
+      padding: 30px;
       display: flex;
       flex-direction: column;
+      gap: 20px;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .form-group label {
+      font-weight: 500;
+      color: var(--text);
+    }
+    
+    input[type="text"], textarea {
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 1px solid #dddfe2;
+      border-radius: 6px;
+      transition: border 0.3s;
+      background-color: var(--white);
+    }
+    
+    input[type="text"]:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 2px #e7f3ff;
+    }
+    
+    button {
+      padding: 12px;
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    button:active {
+      transform: scale(0.98);
+    }
+    
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      background: var(--white);
+      color: var(--text-light);
+      border-bottom: 1px solid var(--divider);
+    }
+    
+    .nav-tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .nav-tab.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--primary);
+    }
+    
+    .nav-tab i {
+      margin-right: 8px;
+    }
+    
+    /* Page Container */
+    .page-container {
+      display: none;
+      height: calc(100% - 56px);
+      flex-direction: column;
+    }
+    
+    .page-container.active {
+      display: flex;
+    }
+    
+    /* Header */
+    .page-header {
+      padding: 15px 20px;
+      background: var(--white);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--divider);
+    }
+    
+    .page-header-info {
+      display: flex;
+      align-items: center;
       gap: 10px;
+    }
+    
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #1877f2, #42b72a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: white;
+    }
+    
+    /* News Feed Page */
+    #news-feed-page .page-content {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .post {
+      background: white;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid var(--divider);
+    }
+    
+    .post-header {
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .post-user {
+      font-weight: 600;
+    }
+    
+    .post-time {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    
+    .post-content {
+      padding: 15px;
+      padding-top: 0;
+    }
+    
+    .post-actions {
+      padding: 10px 15px;
+      display: flex;
+      border-top: 1px solid var(--divider);
+    }
+    
+    .post-action {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: color 0.3s;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .post-action:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .post-action.active {
+      color: var(--primary);
+    }
+    
+    .post-comments {
+      padding: 0 15px 15px;
+      display: none;
+      background-color: #f0f2f5;
+      border-top: 1px solid var(--divider);
+    }
+    
+    .comment {
+      display: flex;
+      margin-top: 10px;
+    }
+    
+    .comment-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #1877f2, #42b72a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      margin-right: 10px;
+      flex-shrink: 0;
+      color: white;
+      font-size: 14px;
+    }
+    
+    .comment-content {
+      flex-grow: 1;
+    }
+    
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .comment-user {
+      font-weight: 600;
+      font-size: 13px;
+    }
+    
+    .comment-time {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+    
+    .comment-text {
+      font-size: 14px;
+      background-color: var(--white);
+      padding: 8px 12px;
+      border-radius: 18px;
+      display: inline-block;
+      max-width: 100%;
+      word-wrap: break-word;
+    }
+    
+    .add-comment {
+      display: flex;
+      margin-top: 10px;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .add-comment .user-avatar {
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
+    }
+    
+    .add-comment input {
+      flex-grow: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 18px;
+      font-size: 14px;
+      background-color: var(--white);
+    }
+    
+    .add-comment button {
+      padding: 8px 12px;
+      font-size: 14px;
+      background-color: var(--primary);
+      border-radius: 18px;
+    }
+    
+    .create-post {
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin-bottom: 15px;
+      border: 1px solid var(--divider);
+    }
+    
+    .create-post textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      resize: none;
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      min-height: 80px;
+    }
+    
+    /* Messenger Page */
+    #messenger-page .page-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .conversations-list {
+      flex: 1;
+      overflow-y: auto;
+      border-bottom: 1px solid var(--divider);
+    }
+    
+    .conversation {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .conversation:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .conversation.active {
+      background-color: #e7f3ff;
+    }
+    
+    .conversation-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #1877f2, #42b72a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: white;
+      margin-right: 10px;
+    }
+    
+    .conversation-info {
+      flex: 1;
+    }
+    
+    .conversation-name {
+      font-weight: 600;
+    }
+    
+    .conversation-preview {
+      font-size: 13px;
+      color: var(--text-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .chat-container {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .chat-container.active {
+      display: flex;
+    }
+    
+    .chat-header {
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--divider);
+    }
+    
+    .chat-header-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #1877f2, #42b72a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: white;
+      margin-right: 10px;
+    }
+    
+    .chat-header-info {
+      flex: 1;
+    }
+    
+    .chat-header-name {
+      font-weight: 600;
+    }
+    
+    .chat-header-status {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    
+    #chat-area {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-color: #f0f2f5;
+    }
+    
+    .message {
+      padding: 8px 12px;
+      border-radius: 18px;
+      max-width: 75%;
+      position: relative;
+      animation: fadeIn 0.3s ease;
+      word-wrap: break-word;
+      font-size: 14px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .message.user {
+      background-color: var(--primary);
+      color: var(--white);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .message.other {
+      background-color: var(--white);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .message-time {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 5px;
+      text-align: right;
+    }
+    
+    .message.other .message-time {
+      color: var(--text-light);
+    }
+    
+    .message-input-container {
+      padding: 15px;
+      border-top: 1px solid var(--divider);
+      background: var(--white);
+    }
+    
+    .message-input {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .message-input input {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 18px;
+      border: none;
+      background-color: #f0f2f5;
+    }
+    
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    
+    /* Friends Page */
+    #friends-page .page-content {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+    
+    .friend-request {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin-bottom: 10px;
+      border: 1px solid var(--divider);
+    }
+    
+    .friend-info {
+      flex: 1;
+      margin-left: 10px;
+    }
+    
+    .friend-name {
+      font-weight: 600;
+    }
+    
+    .friend-mutual {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+    
+    .friend-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .friend-action {
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .accept-btn {
+      background: var(--success);
+      color: white;
+    }
+    
+    .reject-btn {
+      background: #e4e6eb;
+      color: var(--text);
+    }
+    
+    /* Status Messages */
+    .status-message {
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+    
+    .error-message {
+      color: var(--error);
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .success-message {
+      color: var(--success);
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    /* Loading Spinner */
+    .spinner {
+      width: 40px;
+      height: 40px;
+      margin: 20px auto;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Empty States */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      color: var(--text-light);
+    }
+    
+    .empty-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+      color: #e4e6eb;
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        border-radius: 8px;
+        height: 90vh;
+      }
+      
+      #login-section {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>FaceLock App</h1>
-  <!-- Login Section -->
-  <div id="login-section">
-    <label for="username-input">Enter your anonymous username:</label>
-    <input type="text" id="username-input" placeholder="Username" />
-    <button id="start-chat-btn">Start Chat</button>
-  </div>
-
-  <!-- Chat Section -->
-  <div id="chat-section">
-    <label for="search-input">Search for user:</label>
-    <input type="text" id="search-input" placeholder="Search Username" />
-    <button id="search-btn">Search</button>
-
-    <div id="chat-area"></div>
-
-    <input type="text" id="message-input" placeholder="Type your message..." />
-    <button id="send-btn">Send</button>
+  <h1>FaceLock Messenger</h1>
+  
+  <div class="container">
+    <!-- Login Section -->
+    <div id="login-section">
+      <div class="form-group">
+        <label for="username-input">Choose your username</label>
+        <input type="text" id="username-input" placeholder="Enter a username" />
+      </div>
+      <button id="start-chat-btn">
+        <i class="fas fa-comments" style="margin-right: 8px;"></i> Start Chatting
+      </button>
+      <div class="error-message" id="login-error"></div>
+    </div>
+    
+    <!-- Main App Section -->
+    <div id="app-section" style="display: none;">
+      <!-- Navigation Tabs -->
+      <div class="nav-tabs">
+        <div class="nav-tab active" data-page="news-feed-page">
+          <i class="fas fa-newspaper"></i> Feed
+        </div>
+        <div class="nav-tab" data-page="messenger-page">
+          <i class="fas fa-comments"></i> Chats
+        </div>
+        <div class="nav-tab" data-page="friends-page">
+          <i class="fas fa-user-friends"></i> Friends
+        </div>
+      </div>
+      
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-header-info">
+          <div class="user-avatar" id="current-user-avatar">U</div>
+          <span id="current-username">Anonymous</span>
+        </div>
+        <button id="logout-btn" style="background: none; border: none; color: var(--text); cursor: pointer;">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+      
+      <!-- News Feed Page -->
+      <div id="news-feed-page" class="page-container active">
+        <div class="page-content">
+          <div class="create-post">
+            <textarea id="post-content" placeholder="What's on your mind?"></textarea>
+            <button id="post-btn" style="width: 100%;">
+              <i class="fas fa-share-square" style="margin-right: 8px;"></i> Post
+            </button>
+          </div>
+          
+          <div id="posts-container">
+            <!-- Posts will be loaded here -->
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="far fa-newspaper"></i>
+              </div>
+              <h3>No posts yet</h3>
+              <p>Be the first to post something!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Messenger Page -->
+      <div id="messenger-page" class="page-container">
+        <div class="page-content">
+          <div class="conversations-list" id="conversations-list">
+            <!-- Conversations will be loaded here -->
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="far fa-comment-dots"></i>
+              </div>
+              <h3>No conversations</h3>
+              <p>Start chatting with your friends</p>
+            </div>
+          </div>
+          
+          <div class="chat-container" id="chat-container">
+            <div class="chat-header">
+              <div class="chat-header-avatar" id="chat-header-avatar">U</div>
+              <div class="chat-header-info">
+                <div class="chat-header-name" id="chat-header-name">User</div>
+                <div class="chat-header-status" id="chat-header-status">Online</div>
+              </div>
+            </div>
+            
+            <div id="chat-area">
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="far fa-comment-dots"></i>
+                </div>
+                <h3>No messages yet</h3>
+                <p>Send a message to start the conversation</p>
+              </div>
+            </div>
+            
+            <div class="message-input-container">
+              <div class="message-input">
+                <input type="text" id="message-input" placeholder="Type a message..." disabled />
+                <button class="send-btn" id="send-btn" disabled>
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Friends Page -->
+      <div id="friends-page" class="page-container">
+        <div class="page-content">
+          <div id="friend-requests-container">
+            <h3 style="margin-bottom: 15px; color: var(--text);">Friend Requests</h3>
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="fas fa-user-friends"></i>
+              </div>
+              <h3>No friend requests</h3>
+              <p>When you receive friend requests, they'll appear here</p>
+            </div>
+          </div>
+          
+          <div id="friends-list-container" style="margin-top: 20px;">
+            <h3 style="margin-bottom: 15px; color: var(--text);">Your Friends</h3>
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3>No friends yet</h3>
+              <p>Add friends to start chatting</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-    import { getDatabase, ref, set, get, onChildAdded } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+    import { getDatabase, ref, set, get, onChildAdded, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
     // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCwpylnjqWQLBpgoiStlrE01o95aKP3JSY",
       authDomain: "chat-2-me-c3213.firebaseapp.com",
+      databaseURL: "https://chat-2-me-c3213-default-rtdb.firebaseio.com",
       projectId: "chat-2-me-c3213",
-      storageBucket: "chat-2-me-c3213.firebasestorage.app",
+      storageBucket: "chat-2-me-c3213.appspot.com",
       messagingSenderId: "302872350523",
       appId: "1:302872350523:web:e2c911cecc259fc532311e",
       measurementId: "G-PVR3XPQVMS"
@@ -150,110 +821,944 @@
     const db = getDatabase(app);
     const auth = getAuth(app);
 
+    // DOM Elements
+    const loginSection = document.getElementById("login-section");
+    const appSection = document.getElementById("app-section");
+    const usernameInput = document.getElementById("username-input");
+    const startChatBtn = document.getElementById("start-chat-btn");
+    const loginError = document.getElementById("login-error");
+    const currentUserAvatar = document.getElementById("current-user-avatar");
+    const currentUsernameDisplay = document.getElementById("current-username");
+    const logoutBtn = document.getElementById("logout-btn");
+    const navTabs = document.querySelectorAll(".nav-tab");
+    const pages = document.querySelectorAll(".page-container");
+    
+    // News Feed Elements
+    const postContent = document.getElementById("post-content");
+    const postBtn = document.getElementById("post-btn");
+    const postsContainer = document.getElementById("posts-container");
+    
+    // Messenger Elements
+    const conversationsList = document.getElementById("conversations-list");
+    const chatContainer = document.getElementById("chat-container");
+    const chatHeaderAvatar = document.getElementById("chat-header-avatar");
+    const chatHeaderName = document.getElementById("chat-header-name");
+    const chatHeaderStatus = document.getElementById("chat-header-status");
+    const chatArea = document.getElementById("chat-area");
+    const messageInput = document.getElementById("message-input");
+    const sendBtn = document.getElementById("send-btn");
+    
+    // Friends Elements
+    const friendRequestsContainer = document.getElementById("friend-requests-container");
+    const friendsListContainer = document.getElementById("friends-list-container");
+
+    // App State
     let currentUser = null;
-    let chatWithUser = null;
+    let currentChatUser = null;
+    let messageListener = null;
+    let postsListener = null;
+    let friendsListener = null;
+    let friendRequestsListener = null;
+    let conversationsListener = null;
+
+    // Check if user is already logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        const username = localStorage.getItem('messenger_username');
+        if (username) {
+          // User was previously logged in
+          currentUser = username;
+          currentUserAvatar.textContent = username.charAt(0).toUpperCase();
+          currentUsernameDisplay.textContent = username;
+          loginSection.style.display = "none";
+          appSection.style.display = "block";
+          loadPosts();
+          loadFriendRequests();
+          loadFriendsList();
+          loadConversations();
+        }
+      } else {
+        // User is signed out
+        localStorage.removeItem('messenger_username');
+      }
+    });
+
+    // Event Listeners
+    startChatBtn.addEventListener("click", startChat);
+    logoutBtn.addEventListener("click", logout);
+    postBtn.addEventListener("click", createPost);
+    
+    // Navigation Tabs
+    navTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        // Remove active class from all tabs
+        navTabs.forEach(t => t.classList.remove("active"));
+        // Add active class to clicked tab
+        tab.classList.add("active");
+        
+        // Hide all pages
+        pages.forEach(page => page.classList.remove("active"));
+        // Show selected page
+        const pageId = tab.getAttribute("data-page");
+        document.getElementById(pageId).classList.add("active");
+      });
+    });
+    
+    // Messenger Events
+    messageInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+    sendBtn.addEventListener("click", sendMessage);
 
     // Start Chat with Anonymous User
-    document.getElementById("start-chat-btn").addEventListener("click", () => {
-      const username = document.getElementById("username-input").value.trim();
-      if (username === "") {
-        alert("Please enter a username!");
+    async function startChat() {
+      const username = usernameInput.value.trim();
+      
+      if (!username) {
+        showError("Please choose a username!");
         return;
       }
-
-      currentUser = username;
-
-      signInAnonymously(auth)
-        .then(() => {
-          console.log("Logged in as anonymous:", currentUser);
-          
-          // Save user in Firebase when they start chatting
-          const userRef = ref(db, 'users/' + currentUser);
-          set(userRef, {
-            username: currentUser
-          });
-
-          document.getElementById("login-section").style.display = "none";
-          document.getElementById("chat-section").style.display = "block";
-        })
-        .catch((error) => {
-          console.error("Error during login:", error.code, error.message);
+      
+      if (username.length < 3) {
+        showError("Username must be at least 3 characters");
+        return;
+      }
+      
+      startChatBtn.disabled = true;
+      loginError.textContent = "";
+      
+      try {
+        // Sign in anonymously
+        await signInAnonymously(auth);
+        
+        // Check if username exists
+        const usernameExists = await checkUsernameExists(username);
+        if (usernameExists) {
+          throw new Error("Username already taken");
+        }
+        
+        // Save user in Firebase
+        await set(ref(db, `users/${username}`), {
+          username: username,
+          createdAt: Date.now(),
+          lastActive: Date.now()
         });
-    });
-
-    // Search for a User
-    document.getElementById("search-btn").addEventListener("click", () => {
-      const searchUsername = document.getElementById("search-input").value.trim();
-      if (searchUsername === "") {
-        alert("Please enter a username to search!");
-        return;
+        
+        // Save username to localStorage
+        localStorage.setItem('messenger_username', username);
+        
+        // Update app state
+        currentUser = username;
+        currentUserAvatar.textContent = username.charAt(0).toUpperCase();
+        currentUsernameDisplay.textContent = username;
+        
+        // Switch to app interface
+        loginSection.style.display = "none";
+        appSection.style.display = "block";
+        
+        // Load initial data
+        loadPosts();
+        loadFriendRequests();
+        loadFriendsList();
+        loadConversations();
+      } catch (error) {
+        console.error("Error starting chat:", error);
+        showError(error.message);
+        startChatBtn.disabled = false;
       }
+    }
 
-      // Check if the user exists in Firebase under 'users/{username}'
-      const userRef = ref(db, 'users/' + searchUsername);
-      get(userRef).then((snapshot) => {
+    // Check if username exists
+    async function checkUsernameExists(username) {
+      const snapshot = await get(ref(db, `users/${username}`));
+      return snapshot.exists();
+    }
+
+    // Load Conversations
+    function loadConversations() {
+      if (!currentUser) return;
+      
+      conversationsList.innerHTML = '<div class="spinner"></div>';
+      
+      // Remove previous listener if exists
+      if (conversationsListener) {
+        conversationsListener();
+      }
+      
+      const conversationsRef = ref(db, `userChats/${currentUser}`);
+      
+      conversationsListener = onValue(conversationsRef, (snapshot) => {
+        conversationsList.innerHTML = '';
+        
         if (snapshot.exists()) {
-          chatWithUser = searchUsername;
-          alert("User found! You can now chat with " + chatWithUser);
-
-          // Start listening for new messages from the searched user
-          listenForNewMessages(); // Call this to start receiving messages
-
+          const conversations = [];
+          
+          snapshot.forEach((childSnapshot) => {
+            const chatId = childSnapshot.key;
+            const otherUser = chatId.replace(currentUser, '').replace('_', '');
+            const lastMessage = childSnapshot.val().lastMessage || '';
+            const timestamp = childSnapshot.val().timestamp || 0;
+            
+            conversations.push({
+              otherUser,
+              lastMessage,
+              timestamp
+            });
+          });
+          
+          // Sort by timestamp (newest first)
+          conversations.sort((a, b) => b.timestamp - a.timestamp);
+          
+          if (conversations.length > 0) {
+            conversations.forEach(conv => {
+              const convElement = document.createElement("div");
+              convElement.className = "conversation";
+              convElement.innerHTML = `
+                <div class="conversation-avatar">${conv.otherUser.charAt(0).toUpperCase()}</div>
+                <div class="conversation-info">
+                  <div class="conversation-name">${conv.otherUser}</div>
+                  <div class="conversation-preview">${formatLastMessage(conv.lastMessage)}</div>
+                </div>
+              `;
+              convElement.addEventListener("click", () => startChatWithUser(conv.otherUser));
+              conversationsList.appendChild(convElement);
+            });
+          } else {
+            conversationsList.innerHTML = `
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="far fa-comment-dots"></i>
+                </div>
+                <h3>No conversations</h3>
+                <p>Start chatting with your friends</p>
+              </div>
+            `;
+          }
         } else {
-          alert("User not found!");
-        }
-      }).catch((error) => {
-        console.error("Error searching user:", error);
-      });
-    });
-
-    // Listen for new messages from Firebase
-    const listenForNewMessages = () => {
-      const messagesRef = ref(db, 'messages/' + chatWithUser + '/' + currentUser); // Ensure you're fetching messages correctly
-
-      // On every new child added under the path, call this function
-      onChildAdded(messagesRef, (snapshot) => {
-        const messageData = snapshot.val();
-        if (messageData) {
-          // Call the function to display the message
-          displayMessage(messageData.message, messageData.sender);
+          conversationsList.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="far fa-comment-dots"></i>
+              </div>
+              <h3>No conversations</h3>
+              <p>Start chatting with your friends</p>
+            </div>
+          `;
         }
       });
-    };
+    }
 
-    // Send a Message
-    document.getElementById("send-btn").addEventListener("click", () => {
-      const message = document.getElementById("message-input").value.trim();
-      if (message === "" || !chatWithUser) {
-        alert("Please type a message and search for a user first!");
+    // Format last message for preview
+    function formatLastMessage(message) {
+      if (!message) return "No messages yet";
+      if (message.length > 30) {
+        return message.substring(0, 30) + "...";
+      }
+      return message;
+    }
+
+    // Load Friend Requests
+    function loadFriendRequests() {
+      if (!currentUser) return;
+      
+      friendRequestsContainer.innerHTML = '<div class="spinner"></div>';
+      
+      // Remove previous listener if exists
+      if (friendRequestsListener) {
+        friendRequestsListener();
+      }
+      
+      const friendRequestsRef = ref(db, `friendRequests/${currentUser}`);
+      
+      friendRequestsListener = onValue(friendRequestsRef, (snapshot) => {
+        friendRequestsContainer.innerHTML = '<h3 style="margin-bottom: 15px; color: var(--text);">Friend Requests</h3>';
+        
+        if (snapshot.exists()) {
+          const requests = [];
+          
+          snapshot.forEach((childSnapshot) => {
+            const request = childSnapshot.val();
+            if (request.status === "pending") {
+              requests.push({
+                id: childSnapshot.key,
+                from: request.from,
+                timestamp: request.timestamp
+              });
+            }
+          });
+          
+          if (requests.length > 0) {
+            requests.forEach(request => {
+              const requestElement = document.createElement("div");
+              requestElement.className = "friend-request";
+              requestElement.innerHTML = `
+                <div class="user-avatar">${request.from.charAt(0).toUpperCase()}</div>
+                <div class="friend-info">
+                  <div class="friend-name">${request.from}</div>
+                  <div class="friend-mutual">1 mutual friend</div>
+                  <div class="friend-actions">
+                    <div class="friend-action accept-btn" data-request-id="${request.id}" data-from="${request.from}">Confirm</div>
+                    <div class="friend-action reject-btn" data-request-id="${request.id}">Delete</div>
+                  </div>
+                </div>
+              `;
+              friendRequestsContainer.appendChild(requestElement);
+              
+              // Add event listeners to action buttons
+              const acceptBtn = requestElement.querySelector(".accept-btn");
+              const rejectBtn = requestElement.querySelector(".reject-btn");
+              
+              acceptBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                acceptFriendRequest(request.id, request.from);
+              });
+              rejectBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                rejectFriendRequest(request.id);
+              });
+            });
+          } else {
+            friendRequestsContainer.innerHTML = `
+              <h3 style="margin-bottom: 15px; color: var(--text);">Friend Requests</h3>
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="fas fa-user-friends"></i>
+                </div>
+                <h3>No friend requests</h3>
+                <p>When you receive friend requests, they'll appear here</p>
+              </div>
+            `;
+          }
+        } else {
+          friendRequestsContainer.innerHTML = `
+            <h3 style="margin-bottom: 15px; color: var(--text);">Friend Requests</h3>
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="fas fa-user-friends"></i>
+              </div>
+              <h3>No friend requests</h3>
+              <p>When you receive friend requests, they'll appear here</p>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Accept Friend Request
+    async function acceptFriendRequest(requestId, fromUsername) {
+      try {
+        // Update request status
+        await set(ref(db, `friendRequests/${currentUser}/${requestId}/status`), "accepted");
+        
+        // Add to friends list for both users
+        const timestamp = Date.now();
+        
+        // Add to current user's friends
+        await set(ref(db, `friends/${currentUser}/${fromUsername}`), {
+          username: fromUsername,
+          since: timestamp
+        });
+        
+        // Add to requester's friends
+        await set(ref(db, `friends/${fromUsername}/${currentUser}`), {
+          username: currentUser,
+          since: timestamp
+        });
+        
+        // Add to conversations for both users
+        const chatId = [currentUser, fromUsername].sort().join('_');
+        
+        await set(ref(db, `userChats/${currentUser}/${chatId}`), {
+          otherUser: fromUsername,
+          timestamp: timestamp
+        });
+        
+        await set(ref(db, `userChats/${fromUsername}/${chatId}`), {
+          otherUser: currentUser,
+          timestamp: timestamp
+        });
+        
+        // Reload friends list and conversations
+        loadFriendsList();
+        loadConversations();
+        
+        // Show success message
+        alert(`You are now friends with ${fromUsername}`);
+      } catch (error) {
+        console.error("Error accepting friend request:", error);
+        alert("Failed to accept friend request");
+      }
+    }
+
+    // Reject Friend Request
+    async function rejectFriendRequest(requestId) {
+      try {
+        await remove(ref(db, `friendRequests/${currentUser}/${requestId}`));
+      } catch (error) {
+        console.error("Error rejecting friend request:", error);
+        alert("Failed to reject friend request");
+      }
+    }
+
+    // Load Friends List
+    function loadFriendsList() {
+      if (!currentUser) return;
+      
+      friendsListContainer.innerHTML = '<div class="spinner"></div>';
+      
+      // Remove previous listener if exists
+      if (friendsListener) {
+        friendsListener();
+      }
+      
+      const friendsRef = ref(db, `friends/${currentUser}`);
+      
+      friendsListener = onValue(friendsRef, (snapshot) => {
+        friendsListContainer.innerHTML = '<h3 style="margin-bottom: 15px; color: var(--text);">Your Friends</h3>';
+        
+        if (snapshot.exists()) {
+          const friends = [];
+          
+          snapshot.forEach((childSnapshot) => {
+            friends.push({
+              username: childSnapshot.key,
+              since: childSnapshot.val().since
+            });
+          });
+          
+          if (friends.length > 0) {
+            friends.forEach(friend => {
+              const friendElement = document.createElement("div");
+              friendElement.className = "friend-request";
+              friendElement.innerHTML = `
+                <div class="user-avatar">${friend.username.charAt(0).toUpperCase()}</div>
+                <div class="friend-info">
+                  <div class="friend-name">${friend.username}</div>
+                  <div class="friend-mutual">1 mutual friend</div>
+                  <div class="friend-actions">
+                    <div class="friend-action" style="background: var(--primary); color: white;" data-username="${friend.username}">Message</div>
+                  </div>
+                </div>
+              `;
+              friendsListContainer.appendChild(friendElement);
+              
+              // Add event listener to message button
+              const messageBtn = friendElement.querySelector(".friend-action");
+              messageBtn.addEventListener("click", () => {
+                // Switch to messenger tab
+                navTabs.forEach(t => t.classList.remove("active"));
+                document.querySelector('.nav-tab[data-page="messenger-page"]').classList.add("active");
+                pages.forEach(page => page.classList.remove("active"));
+                document.getElementById("messenger-page").classList.add("active");
+                
+                // Start chat with friend
+                startChatWithUser(friend.username);
+              });
+            });
+          } else {
+            friendsListContainer.innerHTML = `
+              <h3 style="margin-bottom: 15px; color: var(--text);">Your Friends</h3>
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <h3>No friends yet</h3>
+                <p>Add friends to start chatting</p>
+              </div>
+            `;
+          }
+        } else {
+          friendsListContainer.innerHTML = `
+            <h3 style="margin-bottom: 15px; color: var(--text);">Your Friends</h3>
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3>No friends yet</h3>
+              <p>Add friends to start chatting</p>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Create Post
+    async function createPost() {
+      const content = postContent.value.trim();
+      
+      if (!content) {
+        alert("Please write something to post");
         return;
       }
-
-      // Save message in Firebase
-      const messageRef = ref(db, 'messages/' + currentUser + '/' + chatWithUser + '/' + Date.now());
-      set(messageRef, {
-        sender: currentUser,
-        message: message,
-        timestamp: Date.now()
-      });
-
-      document.getElementById("message-input").value = ""; // Clear the input field
-      displayMessage(message, "user");
-    });
-
-    // Display Message on Chat Area
-    const displayMessage = (message, sender) => {
-      const messageDiv = document.createElement("div");
-      messageDiv.classList.add("message");
-      if (sender === "user") {
-        messageDiv.classList.add("user");
-      } else {
-        messageDiv.classList.add("other");
+      
+      try {
+        const postId = `${currentUser}_${Date.now()}`;
+        
+        await set(ref(db, `posts/${postId}`), {
+          author: currentUser,
+          content: content,
+          timestamp: Date.now(),
+          likes: {},
+          comments: {}
+        });
+        
+        postContent.value = "";
+      } catch (error) {
+        console.error("Error creating post:", error);
+        alert("Failed to create post");
       }
-      messageDiv.innerText = message;
-      document.getElementById("chat-area").appendChild(messageDiv);
-      document.getElementById("chat-area").scrollTop = document.getElementById("chat-area").scrollHeight; // Auto scroll
-    };
+    }
+
+    // Load Posts
+    function loadPosts() {
+      if (!currentUser) return;
+      
+      postsContainer.innerHTML = '<div class="spinner"></div>';
+      
+      // Remove previous listener if exists
+      if (postsListener) {
+        postsListener();
+      }
+      
+      const postsRef = ref(db, 'posts');
+      
+      postsListener = onValue(postsRef, (snapshot) => {
+        postsContainer.innerHTML = '';
+        
+        if (snapshot.exists()) {
+          const posts = [];
+          
+          snapshot.forEach((childSnapshot) => {
+            posts.push({
+              id: childSnapshot.key,
+              ...childSnapshot.val()
+            });
+          });
+          
+          // Sort by timestamp (newest first)
+          posts.sort((a, b) => b.timestamp - a.timestamp);
+          
+          if (posts.length > 0) {
+            posts.forEach(post => {
+              const postElement = document.createElement("div");
+              postElement.className = "post";
+              postElement.dataset.postId = post.id;
+              
+              // Count likes
+              const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+              // Count comments
+              const commentsCount = post.comments ? Object.keys(post.comments).length : 0;
+              
+              // Check if current user liked this post
+              const isLiked = post.likes && post.likes[currentUser];
+              
+              postElement.innerHTML = `
+                <div class="post-header">
+                  <div class="user-avatar">${post.author.charAt(0).toUpperCase()}</div>
+                  <div>
+                    <div class="post-user">${post.author}</div>
+                    <div class="post-time">${formatTime(post.timestamp)}</div>
+                  </div>
+                </div>
+                <div class="post-content">
+                  ${post.content}
+                </div>
+                <div class="post-actions">
+                  <div class="post-action ${isLiked ? 'active' : ''}" data-action="like">
+                    <i class="far fa-thumbs-up"></i> Like (${likesCount})
+                  </div>
+                  <div class="post-action" data-action="comment">
+                    <i class="far fa-comment"></i> Comment (${commentsCount})
+                  </div>
+                  <div class="post-action" data-action="share">
+                    <i class="far fa-share-square"></i> Share
+                  </div>
+                </div>
+                <div class="post-comments">
+                  <!-- Comments will be loaded here -->
+                </div>
+              `;
+              postsContainer.appendChild(postElement);
+              
+              // Add event listeners to post actions
+              const likeBtn = postElement.querySelector('[data-action="like"]');
+              const commentBtn = postElement.querySelector('[data-action="comment"]');
+              const commentsSection = postElement.querySelector('.post-comments');
+              
+              likeBtn.addEventListener('click', () => toggleLike(post.id));
+              commentBtn.addEventListener('click', () => toggleComments(post.id, commentsSection));
+              
+              // Load comments if any
+              if (commentsCount > 0) {
+                loadComments(post.id, commentsSection);
+              }
+            });
+          } else {
+            postsContainer.innerHTML = `
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="far fa-newspaper"></i>
+                </div>
+                <h3>No posts yet</h3>
+                <p>Be the first to post something!</p>
+              </div>
+            `;
+          }
+        } else {
+          postsContainer.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="far fa-newspaper"></i>
+              </div>
+              <h3>No posts yet</h3>
+              <p>Be the first to post something!</p>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Toggle Like on Post
+    async function toggleLike(postId) {
+      try {
+        const postRef = ref(db, `posts/${postId}/likes/${currentUser}`);
+        const snapshot = await get(postRef);
+        
+        if (snapshot.exists()) {
+          // Unlike the post
+          await remove(postRef);
+        } else {
+          // Like the post
+          await set(postRef, true);
+        }
+      } catch (error) {
+        console.error("Error toggling like:", error);
+        alert("Failed to toggle like");
+      }
+    }
+
+    // Toggle Comments Section
+    function toggleComments(postId, commentsSection) {
+      if (commentsSection.style.display === 'block') {
+        commentsSection.style.display = 'none';
+      } else {
+        commentsSection.style.display = 'block';
+        loadComments(postId, commentsSection);
+      }
+    }
+
+    // Load Comments for a Post
+    function loadComments(postId, commentsSection) {
+      commentsSection.innerHTML = '<div class="spinner" style="margin: 10px auto;"></div>';
+      
+      const commentsRef = ref(db, `posts/${postId}/comments`);
+      
+      onValue(commentsRef, (snapshot) => {
+        commentsSection.innerHTML = '';
+        
+        if (snapshot.exists()) {
+          const comments = [];
+          
+          snapshot.forEach((childSnapshot) => {
+            comments.push({
+              id: childSnapshot.key,
+              ...childSnapshot.val()
+            });
+          });
+          
+          // Sort by timestamp (oldest first)
+          comments.sort((a, b) => a.timestamp - b.timestamp);
+          
+          // Display comments
+          comments.forEach(comment => {
+            const commentElement = document.createElement("div");
+            commentElement.className = "comment";
+            commentElement.innerHTML = `
+              <div class="comment-avatar">${comment.author.charAt(0).toUpperCase()}</div>
+              <div class="comment-content">
+                <div class="comment-header">
+                  <div class="comment-user">${comment.author}</div>
+                  <div class="comment-time">${formatTime(comment.timestamp)}</div>
+                </div>
+                <div class="comment-text">${comment.text}</div>
+              </div>
+            `;
+            commentsSection.appendChild(commentElement);
+          });
+        }
+        
+        // Add comment input
+        const addCommentDiv = document.createElement("div");
+        addCommentDiv.className = "add-comment";
+        addCommentDiv.innerHTML = `
+          <div class="user-avatar">${currentUser.charAt(0).toUpperCase()}</div>
+          <input type="text" placeholder="Write a comment..." class="comment-input" />
+          <button class="comment-submit">Post</button>
+        `;
+        commentsSection.appendChild(addCommentDiv);
+        
+        // Add event listener for posting comments
+        const commentInput = addCommentDiv.querySelector(".comment-input");
+        const commentSubmit = addCommentDiv.querySelector(".comment-submit");
+        
+        commentSubmit.addEventListener("click", () => postComment(postId, commentInput));
+        commentInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") postComment(postId, commentInput);
+        });
+      });
+    }
+
+    // Post a Comment
+    async function postComment(postId, commentInput) {
+      const commentText = commentInput.value.trim();
+      
+      if (!commentText) return;
+      
+      try {
+        const commentId = `${currentUser}_${Date.now()}`;
+        
+        await set(ref(db, `posts/${postId}/comments/${commentId}`), {
+          author: currentUser,
+          text: commentText,
+          timestamp: Date.now()
+        });
+        
+        commentInput.value = "";
+        
+        // Update comments count
+        const commentsRef = ref(db, `posts/${postId}/comments`);
+        const snapshot = await get(commentsRef);
+        const commentsCount = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+        
+        // Update the comments count in the UI
+        const postElement = document.querySelector(`.post[data-post-id="${postId}"]`);
+        if (postElement) {
+          const commentBtn = postElement.querySelector('[data-action="comment"]');
+          commentBtn.innerHTML = `<i class="far fa-comment"></i> Comment (${commentsCount})`;
+        }
+      } catch (error) {
+        console.error("Error posting comment:", error);
+        alert("Failed to post comment");
+      }
+    }
+
+    // Format timestamp
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diff = now - date;
+      
+      if (diff < 60000) { // Less than 1 minute
+        return "Just now";
+      } else if (diff < 3600000) { // Less than 1 hour
+        const minutes = Math.floor(diff / 60000);
+        return `${minutes}m ago`;
+      } else if (diff < 86400000) { // Less than 1 day
+        const hours = Math.floor(diff / 3600000);
+        return `${hours}h ago`;
+      } else {
+        return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+      }
+    }
+
+    // Start Chat with Selected User
+    function startChatWithUser(username) {
+      currentChatUser = username;
+      
+      // Update UI
+      chatHeaderAvatar.textContent = username.charAt(0).toUpperCase();
+      chatHeaderName.textContent = username;
+      chatHeaderStatus.textContent = "Online";
+      
+      // Show chat container
+      chatContainer.classList.add("active");
+      
+      // Clear chat area
+      chatArea.innerHTML = "";
+      
+      // Enable message input
+      messageInput.disabled = false;
+      sendBtn.disabled = false;
+      messageInput.focus();
+      
+      // Load previous messages
+      loadMessages();
+      
+      // Set up real-time listener
+      setupMessageListener();
+      
+      // Update conversation as active in the list
+      updateActiveConversation(username);
+    }
+
+    // Update active conversation in the list
+    function updateActiveConversation(username) {
+      const conversations = document.querySelectorAll('.conversation');
+      conversations.forEach(conv => {
+        conv.classList.remove('active');
+        if (conv.querySelector('.conversation-name').textContent === username) {
+          conv.classList.add('active');
+        }
+      });
+    }
+
+    // Load Previous Messages
+    async function loadMessages() {
+      try {
+        // Show loading state
+        chatArea.innerHTML = '<div class="spinner"></div>';
+        
+        // Get messages between current user and chat user
+        const messagesRef = ref(db, `messages/${getChatId()}`);
+        const snapshot = await get(messagesRef);
+        
+        chatArea.innerHTML = "";
+        
+        if (snapshot.exists()) {
+          const messages = [];
+          snapshot.forEach((childSnapshot) => {
+            messages.push(childSnapshot.val());
+          });
+          
+          // Sort by timestamp
+          messages.sort((a, b) => a.timestamp - b.timestamp);
+          
+          // Display messages
+          messages.forEach(msg => {
+            displayMessage(msg.text, msg.sender === currentUser ? "user" : "other", msg.timestamp);
+          });
+          
+          // Scroll to bottom
+          chatArea.scrollTop = chatArea.scrollHeight;
+        } else {
+          chatArea.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="far fa-comment-dots"></i>
+              </div>
+              <p>Start a new conversation with ${currentChatUser}</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error("Error loading messages:", error);
+        chatArea.innerHTML = '<div class="error-message">Error loading messages</div>';
+      }
+    }
+
+    // Set Up Real-time Message Listener
+    function setupMessageListener() {
+      // Remove previous listener if exists
+      if (messageListener) {
+        messageListener();
+      }
+      
+      const messagesRef = ref(db, `messages/${getChatId()}`);
+      
+      messageListener = onChildAdded(messagesRef, (snapshot) => {
+        const message = snapshot.val();
+        displayMessage(message.text, message.sender === currentUser ? "user" : "other", message.timestamp);
+        
+        // Update conversation last message
+        const chatId = getChatId();
+        const conversationRef = ref(db, `userChats/${currentUser}/${chatId}`);
+        
+        set(conversationRef, {
+          otherUser: currentChatUser,
+          lastMessage: message.text,
+          timestamp: message.timestamp
+        });
+      });
+    }
+
+    // Generate Chat ID (alphabetical order of usernames)
+    function getChatId() {
+      return [currentUser, currentChatUser].sort().join('_');
+    }
+
+    // Send Message
+    async function sendMessage() {
+      const messageText = messageInput.value.trim();
+      
+      if (!messageText || !currentChatUser) return;
+      
+      try {
+        // Create message object
+        const message = {
+          text: messageText,
+          sender: currentUser,
+          timestamp: Date.now()
+        };
+        
+        // Save to Firebase
+        const messagesRef = ref(db, `messages/${getChatId()}`);
+        await push(messagesRef, message);
+        
+        // Clear input
+        messageInput.value = "";
+      } catch (error) {
+        console.error("Error sending message:", error);
+        alert("Failed to send message");
+      }
+    }
+
+    // Display Message in Chat Area
+    function displayMessage(text, sender, timestamp) {
+      // Remove empty state if present
+      if (chatArea.querySelector(".empty-state")) {
+        chatArea.innerHTML = "";
+      }
+      
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `message ${sender}`;
+      
+      const timeString = new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      messageDiv.innerHTML = `
+        <div>${text}</div>
+        <div class="message-time">${timeString}</div>
+      `;
+      
+      chatArea.appendChild(messageDiv);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    // Logout
+    function logout() {
+      if (messageListener) {
+        messageListener();
+      }
+      
+      if (postsListener) {
+        postsListener();
+      }
+      
+      if (friendsListener) {
+        friendsListener();
+      }
+      
+      if (friendRequestsListener) {
+        friendRequestsListener();
+      }
+      
+      if (conversationsListener) {
+        conversationsListener();
+      }
+      
+      // Clear local storage
+      localStorage.removeItem('messenger_username');
+      
+      // Sign out
+      auth.signOut().then(() => {
+        window.location.reload();
+      });
+    }
+
+    // Show Error Message
+    function showError(message) {
+      loginError.textContent = message;
+    }
   </script>
 </body>
 </html>
