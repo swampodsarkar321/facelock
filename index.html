@@ -8,15 +8,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
-      --primary: #00bfae;
-      --primary-dark: #008c80;
-      --secondary: #f7f7f7;
+      --primary: #1877f2; /* Facebook blue */
+      --primary-dark: #166fe5;
+      --secondary: #f0f2f5;
       --white: #ffffff;
-      --text: #2f4f4f;
-      --text-light: #666;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --text: #1c1e21;
+      --text-light: #65676b;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       --error: #ff5252;
-      --success: #4caf50;
+      --success: #42b72a;
+      --divider: #dadde1;
     }
     
     * {
@@ -35,7 +36,7 @@
     
     h1 {
       text-align: center;
-      color: var(--primary-dark);
+      color: var(--primary);
       margin-bottom: 30px;
       font-size: 28px;
     }
@@ -45,9 +46,10 @@
       margin: 0 auto;
       width: 100%;
       background: var(--white);
-      border-radius: 12px;
+      border-radius: 8px;
       box-shadow: var(--shadow);
       overflow: hidden;
+      height: 80vh;
     }
     
     /* Login Section */
@@ -72,14 +74,16 @@
     input[type="text"], textarea {
       padding: 12px 15px;
       font-size: 16px;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
+      border: 1px solid #dddfe2;
+      border-radius: 6px;
       transition: border 0.3s;
+      background-color: var(--white);
     }
     
     input[type="text"]:focus, textarea:focus {
       border-color: var(--primary);
       outline: none;
+      box-shadow: 0 0 0 2px #e7f3ff;
     }
     
     button {
@@ -87,9 +91,9 @@
       background-color: var(--primary);
       color: var(--white);
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
     }
@@ -105,8 +109,9 @@
     /* Navigation Tabs */
     .nav-tabs {
       display: flex;
-      background: var(--primary);
-      color: white;
+      background: var(--white);
+      color: var(--text-light);
+      border-bottom: 1px solid var(--divider);
     }
     
     .nav-tab {
@@ -114,11 +119,23 @@
       text-align: center;
       padding: 15px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: all 0.3s;
+      position: relative;
     }
     
     .nav-tab.active {
-      background: var(--primary-dark);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--primary);
     }
     
     .nav-tab i {
@@ -128,8 +145,9 @@
     /* Page Container */
     .page-container {
       display: none;
-      height: 70vh;
+      height: calc(100% - 56px);
       flex-direction: column;
+      overflow-y: auto;
     }
     
     .page-container.active {
@@ -139,11 +157,12 @@
     /* Header */
     .page-header {
       padding: 15px 20px;
-      background: var(--primary);
-      color: var(--white);
+      background: var(--white);
+      color: var(--text);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-bottom: 1px solid var(--divider);
     }
     
     .page-header-info {
@@ -156,11 +175,14 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
+      background: linear-gradient(45deg, #1877f2, #42b72a);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 500;
+      font-weight: 600;
+      color: white;
+      background-size: cover;
+      background-position: center;
     }
     
     /* News Feed Page */
@@ -178,6 +200,8 @@
       border-radius: 8px;
       box-shadow: var(--shadow);
       overflow: hidden;
+      border: 1px solid var(--divider);
+      position: relative;
     }
     
     .post-header {
@@ -185,11 +209,10 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid #eee;
     }
     
     .post-user {
-      font-weight: 500;
+      font-weight: 600;
     }
     
     .post-time {
@@ -199,12 +222,13 @@
     
     .post-content {
       padding: 15px;
+      padding-top: 0;
     }
     
     .post-actions {
       padding: 10px 15px;
       display: flex;
-      border-top: 1px solid #eee;
+      border-top: 1px solid var(--divider);
     }
     
     .post-action {
@@ -214,10 +238,13 @@
       cursor: pointer;
       color: var(--text-light);
       transition: color 0.3s;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 14px;
     }
     
     .post-action:hover {
-      color: var(--primary);
+      background-color: rgba(0, 0, 0, 0.05);
     }
     
     .post-action.active {
@@ -227,59 +254,89 @@
     .post-comments {
       padding: 0 15px 15px;
       display: none;
+      background-color: #f0f2f5;
+      border-top: 1px solid var(--divider);
     }
     
     .comment {
       display: flex;
-      margin-bottom: 10px;
+      margin-top: 10px;
     }
     
     .comment-avatar {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: #e0e0e0;
+      background: linear-gradient(45deg, #1877f2, #42b72a);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 500;
       margin-right: 10px;
       flex-shrink: 0;
+      color: white;
+      font-size: 14px;
+      background-size: cover;
+      background-position: center;
     }
     
     .comment-content {
-      background: #f5f5f5;
-      padding: 8px 12px;
-      border-radius: 12px;
       flex-grow: 1;
     }
     
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
     .comment-user {
-      font-weight: 500;
-      font-size: 14px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    
+    .comment-time {
+      font-size: 11px;
+      color: var(--text-light);
     }
     
     .comment-text {
       font-size: 14px;
+      background-color: var(--white);
+      padding: 8px 12px;
+      border-radius: 18px;
+      display: inline-block;
+      max-width: 100%;
+      word-wrap: break-word;
     }
     
     .add-comment {
       display: flex;
       margin-top: 10px;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .add-comment .user-avatar {
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
     }
     
     .add-comment input {
       flex-grow: 1;
       padding: 8px 12px;
-      border: 1px solid #e0e0e0;
+      border: none;
       border-radius: 18px;
       font-size: 14px;
+      background-color: var(--white);
     }
     
     .add-comment button {
-      margin-left: 8px;
       padding: 8px 12px;
       font-size: 14px;
+      background-color: var(--primary);
+      border-radius: 18px;
     }
     
     .create-post {
@@ -288,12 +345,16 @@
       border-radius: 8px;
       box-shadow: var(--shadow);
       margin-bottom: 15px;
+      border: 1px solid var(--divider);
     }
     
     .create-post textarea {
       width: 100%;
       margin-bottom: 10px;
       resize: none;
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      min-height: 80px;
     }
     
     /* Messenger Page */
@@ -303,27 +364,102 @@
       height: 100%;
     }
     
-    .search-container {
-      padding: 15px;
-      border-bottom: 1px solid #eee;
-      position: relative;
+    .conversations-list {
+      flex: 1;
+      overflow-y: auto;
+      border-bottom: 1px solid var(--divider);
     }
     
-    .search-input {
-      position: relative;
+    .conversation {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
     
-    .search-input i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
+    .conversation:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .conversation.active {
+      background-color: #e7f3ff;
+    }
+    
+    .conversation-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #1877f2, #42b72a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: white;
+      margin-right: 10px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .conversation-info {
+      flex: 1;
+    }
+    
+    .conversation-name {
+      font-weight: 600;
+    }
+    
+    .conversation-preview {
+      font-size: 13px;
       color: var(--text-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     
-    .search-input input {
-      padding-left: 40px;
-      width: 100%;
+    .chat-container {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .chat-container.active {
+      display: flex;
+    }
+    
+    .chat-header {
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--divider);
+    }
+    
+    .chat-header-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #1877f2, #42b72a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: white;
+      margin-right: 10px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .chat-header-info {
+      flex: 1;
+    }
+    
+    .chat-header-name {
+      font-weight: 600;
+    }
+    
+    .chat-header-status {
+      font-size: 12px;
+      color: var(--text-light);
     }
     
     #chat-area {
@@ -333,16 +469,17 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      background: url('https://transparenttextures.com/patterns/light-wool.png');
+      background-color: #f0f2f5;
     }
     
     .message {
-      padding: 12px 16px;
+      padding: 8px 12px;
       border-radius: 18px;
       max-width: 75%;
       position: relative;
       animation: fadeIn 0.3s ease;
       word-wrap: break-word;
+      font-size: 14px;
     }
     
     @keyframes fadeIn {
@@ -361,7 +498,7 @@
       background-color: var(--white);
       align-self: flex-start;
       border-bottom-left-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
     
     .message-time {
@@ -377,7 +514,7 @@
     
     .message-input-container {
       padding: 15px;
-      border-top: 1px solid #eee;
+      border-top: 1px solid var(--divider);
       background: var(--white);
     }
     
@@ -390,55 +527,19 @@
     .message-input input {
       flex: 1;
       padding: 12px 15px;
+      border-radius: 18px;
+      border: none;
+      background-color: #f0f2f5;
     }
     
     .send-btn {
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0;
-    }
-    
-    /* Search Results */
-    .search-results {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--white);
-      border-radius: 0 0 8px 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 10;
-      display: none;
-    }
-    
-    .user-result {
-      padding: 12px 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    
-    .user-result:hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-    
-    .user-result-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #e0e0e0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 500;
     }
     
     /* Friends Page */
@@ -456,6 +557,7 @@
       border-radius: 8px;
       box-shadow: var(--shadow);
       margin-bottom: 10px;
+      border: 1px solid var(--divider);
     }
     
     .friend-info {
@@ -464,7 +566,13 @@
     }
     
     .friend-name {
-      font-weight: 500;
+      font-weight: 600;
+    }
+    
+    .friend-mutual {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 2px;
     }
     
     .friend-actions {
@@ -473,10 +581,11 @@
     }
     
     .friend-action {
-      padding: 6px 12px;
-      border-radius: 4px;
+      padding: 8px 12px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
+      font-weight: 600;
     }
     
     .accept-btn {
@@ -485,8 +594,167 @@
     }
     
     .reject-btn {
-      background: var(--error);
+      background: #e4e6eb;
+      color: var(--text);
+    }
+    
+    /* Profile Page */
+    #profile-page .page-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+    
+    .profile-header {
+      position: relative;
+      height: 200px;
+      background: linear-gradient(135deg, #1877f2, #42b72a);
+    }
+    
+    .profile-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .profile-picture-container {
+      position: absolute;
+      bottom: -50px;
+      left: 20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 4px solid var(--white);
+      background: var(--secondary);
+      overflow: hidden;
+    }
+    
+    .profile-picture {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    
+    .profile-info {
+      padding: 70px 20px 20px;
+      background: var(--white);
+    }
+    
+    .profile-name {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .profile-bio {
+      color: var(--text-light);
+      margin-bottom: 15px;
+    }
+    
+    .profile-stats {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .profile-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .profile-stat-value {
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    .profile-stat-label {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    
+    .profile-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .profile-action {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .profile-action.primary {
+      background: var(--primary);
       color: white;
+    }
+    
+    .profile-action.secondary {
+      background: #e4e6eb;
+      color: var(--text);
+    }
+    
+    .profile-tabs {
+      display: flex;
+      background: var(--white);
+      border-bottom: 1px solid var(--divider);
+    }
+    
+    .profile-tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-light);
+      border-bottom: 3px solid transparent;
+    }
+    
+    .profile-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    
+    .profile-content {
+      padding: 15px;
+      background: var(--white);
+    }
+    
+    .profile-posts {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .emoji-picker {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 15px;
+      border-top: 1px solid var(--divider);
+      z-index: 100;
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .emoji-option {
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    .emoji-option:hover {
+      background: #f0f2f5;
+      border-radius: 50%;
     }
     
     /* Status Messages */
@@ -540,7 +808,50 @@
     .empty-icon {
       font-size: 60px;
       margin-bottom: 15px;
-      color: #e0e0e0;
+      color: #e4e6eb;
+    }
+    
+    /* Post Options */
+    .post-options {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      z-index: 1;
+    }
+    
+    .post-options-menu {
+      position: absolute;
+      top: 40px;
+      right: 10px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      z-index: 2;
+      display: none;
+    }
+    
+    .post-options-item {
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .post-options-item:hover {
+      background-color: #f0f2f5;
+    }
+    
+    .post-options-item.delete {
+      color: var(--error);
     }
     
     /* Responsive */
@@ -551,11 +862,200 @@
       
       .container {
         border-radius: 8px;
+        height: 90vh;
       }
       
       #login-section {
         padding: 20px;
       }
+      
+      .nav-tab {
+        padding: 12px 8px;
+        font-size: 14px;
+      }
+      
+      .nav-tab i {
+        margin-right: 5px;
+      }
+      
+      .profile-header {
+        height: 150px;
+      }
+      
+      .profile-picture-container {
+        width: 80px;
+        height: 80px;
+        bottom: -40px;
+      }
+      
+      .profile-info {
+        padding: 50px 15px 15px;
+      }
+      
+      .profile-name {
+        font-size: 20px;
+      }
+      
+      .profile-tab {
+        padding: 12px 8px;
+        font-size: 14px;
+      }
+      
+      .friend-actions {
+        flex-direction: column;
+        gap: 5px;
+      }
+      
+      .friend-action {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+    }
+    
+    /* Add Friend Button */
+    .add-friend-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    
+    .add-friend-btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    /* Search Bar */
+    .search-container {
+      padding: 10px 15px;
+      background: white;
+      border-bottom: 1px solid var(--divider);
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 1px solid var(--divider);
+      font-size: 14px;
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    /* People List */
+    .people-list {
+      padding: 15px;
+    }
+    
+    .person {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin-bottom: 10px;
+    }
+    
+    .person-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #1877f2, #42b72a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      color: white;
+      margin-right: 10px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .person-info {
+      flex: 1;
+    }
+    
+    .person-name {
+      font-weight: 600;
+    }
+    
+    .person-bio {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      padding: 15px;
+      border-bottom: 1px solid var(--divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .modal-title {
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .modal-body {
+      padding: 15px;
+    }
+    
+    .modal-footer {
+      padding: 15px;
+      border-top: 1px solid var(--divider);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    
+    /* Edit Post Modal */
+    .edit-post-textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 10px;
+      border: 1px solid var(--divider);
+      border-radius: 6px;
+      resize: none;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -580,13 +1080,16 @@
       <!-- Navigation Tabs -->
       <div class="nav-tabs">
         <div class="nav-tab active" data-page="news-feed-page">
-          <i class="fas fa-newspaper"></i> News Feed
+          <i class="fas fa-newspaper"></i> Feed
         </div>
         <div class="nav-tab" data-page="messenger-page">
-          <i class="fas fa-comments"></i> Messenger
+          <i class="fas fa-comments"></i> Chats
         </div>
         <div class="nav-tab" data-page="friends-page">
           <i class="fas fa-user-friends"></i> Friends
+        </div>
+        <div class="nav-tab" data-page="profile-page">
+          <i class="fas fa-user"></i> Profile
         </div>
       </div>
       
@@ -596,7 +1099,7 @@
           <div class="user-avatar" id="current-user-avatar">U</div>
           <span id="current-username">Anonymous</span>
         </div>
-        <button id="logout-btn" style="background: none; border: none; color: white; cursor: pointer;">
+        <button id="logout-btn" style="background: none; border: none; color: var(--text); cursor: pointer;">
           <i class="fas fa-sign-out-alt"></i>
         </button>
       </div>
@@ -607,7 +1110,7 @@
           <div class="create-post">
             <textarea id="post-content" placeholder="What's on your mind?"></textarea>
             <button id="post-btn" style="width: 100%;">
-              <i class="fas fa-share-square"></i> Post
+              <i class="fas fa-share-square" style="margin-right: 8px;"></i> Post
             </button>
           </div>
           
@@ -627,30 +1130,43 @@
       <!-- Messenger Page -->
       <div id="messenger-page" class="page-container">
         <div class="page-content">
-          <div class="search-container">
-            <div class="search-input">
-              <i class="fas fa-search"></i>
-              <input type="text" id="search-input" placeholder="Search for a user..." />
-            </div>
-            <div class="search-results" id="search-results"></div>
-          </div>
-          
-          <div id="chat-area">
+          <div class="conversations-list" id="conversations-list">
+            <!-- Conversations will be loaded here -->
             <div class="empty-state">
               <div class="empty-icon">
                 <i class="far fa-comment-dots"></i>
               </div>
-              <h3>No active chat</h3>
-              <p>Search for a user to start chatting</p>
+              <h3>No conversations</h3>
+              <p>Start chatting with your friends</p>
             </div>
           </div>
           
-          <div class="message-input-container">
-            <div class="message-input">
-              <input type="text" id="message-input" placeholder="Type your message..." disabled />
-              <button class="send-btn" id="send-btn" disabled>
-                <i class="fas fa-paper-plane"></i>
-              </button>
+          <div class="chat-container" id="chat-container">
+            <div class="chat-header">
+              <div class="chat-header-avatar" id="chat-header-avatar">U</div>
+              <div class="chat-header-info">
+                <div class="chat-header-name" id="chat-header-name">User</div>
+                <div class="chat-header-status" id="chat-header-status">Online</div>
+              </div>
+            </div>
+            
+            <div id="chat-area">
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="far fa-comment-dots"></i>
+                </div>
+                <h3>No messages yet</h3>
+                <p>Send a message to start the conversation</p>
+              </div>
+            </div>
+            
+            <div class="message-input-container">
+              <div class="message-input">
+                <input type="text" id="message-input" placeholder="Type a message..." disabled />
+                <button class="send-btn" id="send-btn" disabled>
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -659,6 +1175,17 @@
       <!-- Friends Page -->
       <div id="friends-page" class="page-container">
         <div class="page-content">
+          <div class="search-container">
+            <input type="text" class="search-input" id="people-search" placeholder="Search for people..." />
+          </div>
+          
+          <div id="people-list" class="people-list" style="display: none;">
+            <h3 style="margin-bottom: 15px; color: var(--text);">People</h3>
+            <div id="people-results">
+              <!-- Search results will appear here -->
+            </div>
+          </div>
+          
           <div id="friend-requests-container">
             <h3 style="margin-bottom: 15px; color: var(--text);">Friend Requests</h3>
             <div class="empty-state">
@@ -681,6 +1208,84 @@
             </div>
           </div>
         </div>
+      </div>
+      
+      <!-- Profile Page -->
+      <div id="profile-page" class="page-container">
+        <div class="page-content">
+          <div class="profile-header">
+            <div class="profile-cover" id="profile-cover"></div>
+            <div class="profile-picture-container">
+              <div class="profile-picture" id="profile-picture"></div>
+            </div>
+          </div>
+          
+          <div class="profile-info">
+            <div class="profile-name" id="profile-name">User</div>
+            <div class="profile-bio" id="profile-bio">No bio yet</div>
+            
+            <div class="profile-stats">
+              <div class="profile-stat">
+                <div class="profile-stat-value" id="post-count">0</div>
+                <div class="profile-stat-label">Posts</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-value" id="friend-count">0</div>
+                <div class="profile-stat-label">Friends</div>
+              </div>
+            </div>
+            
+            <div class="profile-actions">
+              <div class="profile-action primary" id="edit-profile-btn">
+                <i class="fas fa-pencil-alt" style="margin-right: 5px;"></i> Edit Profile
+              </div>
+              <div class="profile-action secondary" id="change-avatar-btn">
+                <i class="fas fa-camera" style="margin-right: 5px;"></i> Change Avatar
+              </div>
+            </div>
+          </div>
+          
+          <div class="profile-tabs">
+            <div class="profile-tab active" data-tab="posts">Posts</div>
+            <div class="profile-tab" data-tab="friends">Friends</div>
+            <div class="profile-tab" data-tab="photos">Photos</div>
+          </div>
+          
+          <div class="profile-content">
+            <div class="profile-posts" id="profile-posts">
+              <!-- User's posts will be loaded here -->
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="far fa-newspaper"></i>
+                </div>
+                <h3>No posts yet</h3>
+                <p>When you create posts, they'll appear here</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Emoji Picker (hidden by default) -->
+      <div class="emoji-picker" id="emoji-picker">
+        <!-- Emojis will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Post Modal -->
+  <div class="modal" id="edit-post-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Edit Post</div>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <textarea class="edit-post-textarea" id="edit-post-textarea"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-cancel">Cancel</button>
+        <button class="modal-save" id="save-post-btn">Save</button>
       </div>
     </div>
   </div>
@@ -726,8 +1331,11 @@
     const postsContainer = document.getElementById("posts-container");
     
     // Messenger Elements
-    const searchInput = document.getElementById("search-input");
-    const searchResults = document.getElementById("search-results");
+    const conversationsList = document.getElementById("conversations-list");
+    const chatContainer = document.getElementById("chat-container");
+    const chatHeaderAvatar = document.getElementById("chat-header-avatar");
+    const chatHeaderName = document.getElementById("chat-header-name");
+    const chatHeaderStatus = document.getElementById("chat-header-status");
     const chatArea = document.getElementById("chat-area");
     const messageInput = document.getElementById("message-input");
     const sendBtn = document.getElementById("send-btn");
@@ -735,15 +1343,140 @@
     // Friends Elements
     const friendRequestsContainer = document.getElementById("friend-requests-container");
     const friendsListContainer = document.getElementById("friends-list-container");
+    const peopleSearch = document.getElementById("people-search");
+    const peopleList = document.getElementById("people-list");
+    const peopleResults = document.getElementById("people-results");
+    
+    // Profile Elements
+    const profileName = document.getElementById("profile-name");
+    const profileBio = document.getElementById("profile-bio");
+    const profilePicture = document.getElementById("profile-picture");
+    const profileCover = document.getElementById("profile-cover");
+    const postCount = document.getElementById("post-count");
+    const friendCount = document.getElementById("friend-count");
+    const editProfileBtn = document.getElementById("edit-profile-btn");
+    const changeAvatarBtn = document.getElementById("change-avatar-btn");
+    const profilePosts = document.getElementById("profile-posts");
+    const emojiPicker = document.getElementById("emoji-picker");
+    const profileTabs = document.querySelectorAll(".profile-tab");
+
+    // Modal Elements
+    const editPostModal = document.getElementById("edit-post-modal");
+    const editPostTextarea = document.getElementById("edit-post-textarea");
+    const savePostBtn = document.getElementById("save-post-btn");
+    const modalClose = document.querySelector(".modal-close");
+    const modalCancel = document.querySelector(".modal-cancel");
 
     // App State
     let currentUser = null;
     let currentChatUser = null;
     let messageListener = null;
-    let searchTimeout = null;
     let postsListener = null;
     let friendsListener = null;
     let friendRequestsListener = null;
+    let conversationsListener = null;
+    let profileListener = null;
+    let userProfileData = null;
+    let currentlyEditingPostId = null;
+
+    // Emoji list for avatar selection
+    const emojis = [
+      "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇",
+      "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚",
+      "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎", "🥸",
+      "🤩", "🥳", "😏", "😒", "😞", "😔", "😟", "😕", "🙁", "☹️",
+      "😣", "😖", "😫", "😩", "🥺", "😢", "😭", "😤", "😠", "😡",
+      "🤬", "🤯", "😳", "🥵", "🥶", "😱", "😨", "😰", "😥", "😓",
+      "🤗", "🤔", "🤭", "🤫", "🤥", "😶", "😐", "😑", "😬", "🙄",
+      "😯", "😦", "😧", "😮", "😲", "🥱", "😴", "🤤", "😪", "😵",
+      "🤐", "🥴", "🤢", "🤮", "🤧", "😷", "🤒", "🤕", "🤑", "🤠",
+      "😈", "👿", "👹", "👺", "🤡", "💩", "👻", "💀", "☠️", "👽",
+      "👾", "🤖", "🎃", "😺", "😸", "😹", "😻", "😼", "😽", "🙀",
+      "😿", "😾", "🙈", "🙉", "🙊", "💋", "💌", "💘", "💝", "💖",
+      "💗", "💓", "💞", "💕", "💟", "❣️", "💔", "❤️", "🧡", "💛",
+      "💚", "💙", "💜", "🤎", "🖤", "🤍", "💯", "💢", "💥", "💫",
+      "💦", "💨", "🕳️", "💣", "💬", "👁️‍🗨️", "🗨️", "🗯️", "💭", "💤"
+    ];
+
+    // Initialize emoji picker
+    function initEmojiPicker() {
+      emojiPicker.innerHTML = '';
+      emojis.forEach(emoji => {
+        const emojiOption = document.createElement("div");
+        emojiOption.className = "emoji-option";
+        emojiOption.textContent = emoji;
+        emojiOption.addEventListener("click", () => {
+          setProfilePicture(emoji);
+          emojiPicker.style.display = "none";
+        });
+        emojiPicker.appendChild(emojiOption);
+      });
+    }
+
+    // Set profile picture (emoji or image)
+    async function setProfilePicture(picture) {
+      try {
+        // Update in Firebase
+        await update(ref(db, `users/${currentUser}`), {
+          profilePicture: picture
+        });
+        
+        // Update UI
+        updateAvatarElements(currentUser, picture);
+      } catch (error) {
+        console.error("Error setting profile picture:", error);
+        alert("Failed to update profile picture");
+      }
+    }
+
+    // Update all avatar elements for a user
+    function updateAvatarElements(username, picture) {
+      // Check if it's an emoji (single character)
+      if (picture && picture.length === 1) {
+        // It's an emoji
+        document.querySelectorAll(`.user-avatar, .conversation-avatar, .comment-avatar`).forEach(el => {
+          if (el.textContent.trim() === username.charAt(0)) {
+            el.textContent = picture;
+            el.style.backgroundImage = "none";
+          }
+        });
+        
+        // Update profile picture
+        if (username === currentUser) {
+          profilePicture.textContent = picture;
+          profilePicture.style.backgroundImage = "none";
+        }
+      } else if (picture) {
+        // It's an image URL
+        document.querySelectorAll(`.user-avatar, .conversation-avatar, .comment-avatar`).forEach(el => {
+          if (el.textContent.trim() === username.charAt(0)) {
+            el.textContent = "";
+            el.style.backgroundImage = `url(${picture})`;
+          }
+        });
+        
+        // Update profile picture
+        if (username === currentUser) {
+          profilePicture.textContent = "";
+          profilePicture.style.backgroundImage = `url(${picture})`;
+        }
+      } else {
+        // Default to first letter
+        const initial = username.charAt(0).toUpperCase();
+        document.querySelectorAll(`.user-avatar, .conversation-avatar, .comment-avatar`).forEach(el => {
+          if (el.textContent.trim() === username.charAt(0)) {
+            el.textContent = initial;
+            el.style.backgroundImage = "none";
+          }
+        });
+        
+        // Update profile picture
+        if (username === currentUser) {
+          profilePicture.textContent = initial;
+          profilePicture.style.backgroundImage = "none";
+        }
+      }
+    }
 
     // Check if user is already logged in
     onAuthStateChanged(auth, (user) => {
@@ -755,11 +1488,20 @@
           currentUser = username;
           currentUserAvatar.textContent = username.charAt(0).toUpperCase();
           currentUsernameDisplay.textContent = username;
+          profileName.textContent = username;
           loginSection.style.display = "none";
           appSection.style.display = "block";
           loadPosts();
           loadFriendRequests();
           loadFriendsList();
+          loadConversations();
+          loadProfile();
+          initEmojiPicker();
+          
+          // Generate random cover photo color
+          const colors = ['#1877f2', '#42b72a', '#f5533d', '#f5a623', '#8e44ad'];
+          const randomColor = colors[Math.floor(Math.random() * colors.length)];
+          profileCover.style.backgroundColor = randomColor;
         }
       } else {
         // User is signed out
@@ -771,6 +1513,8 @@
     startChatBtn.addEventListener("click", startChat);
     logoutBtn.addEventListener("click", logout);
     postBtn.addEventListener("click", createPost);
+    editProfileBtn.addEventListener("click", editProfile);
+    changeAvatarBtn.addEventListener("click", showEmojiPicker);
     
     // Navigation Tabs
     navTabs.forEach(tab => {
@@ -788,12 +1532,57 @@
       });
     });
     
+    // Profile Tabs
+    profileTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        // Remove active class from all tabs
+        profileTabs.forEach(t => t.classList.remove("active"));
+        // Add active class to clicked tab
+        tab.classList.add("active");
+        
+        // Handle tab content
+        const tabId = tab.getAttribute("data-tab");
+        // In a real app, you would load different content for each tab
+        // For this demo, we'll just show a message
+        profilePosts.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i class="fas fa-${tabId}"></i>
+            </div>
+            <h3>${tabId.charAt(0).toUpperCase() + tabId.slice(1)} tab</h3>
+            <p>This would show ${tabId} in a full implementation</p>
+          </div>
+        `;
+      });
+    });
+    
     // Messenger Events
-    searchInput.addEventListener("input", handleSearch);
     messageInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") sendMessage();
     });
     sendBtn.addEventListener("click", sendMessage);
+
+    // People Search
+    peopleSearch.addEventListener("input", () => {
+      const searchTerm = peopleSearch.value.trim();
+      if (searchTerm.length > 0) {
+        peopleList.style.display = "block";
+        searchPeople(searchTerm);
+      } else {
+        peopleList.style.display = "none";
+      }
+    });
+
+    // Modal Events
+    modalClose.addEventListener("click", () => {
+      editPostModal.style.display = "none";
+    });
+    
+    modalCancel.addEventListener("click", () => {
+      editPostModal.style.display = "none";
+    });
+    
+    savePostBtn.addEventListener("click", saveEditedPost);
 
     // Start Chat with Anonymous User
     async function startChat() {
@@ -814,7 +1603,7 @@
       
       try {
         // Sign in anonymously
-        await signInAnonymously(auth);
+        const userCredential = await signInAnonymously(auth);
         
         // Check if username exists
         const usernameExists = await checkUsernameExists(username);
@@ -825,7 +1614,9 @@
         // Save user in Firebase
         await set(ref(db, `users/${username}`), {
           username: username,
-          createdAt: Date.now()
+          createdAt: Date.now(),
+          lastActive: Date.now(),
+          bio: "Hey there! I'm using FaceLock Messenger"
         });
         
         // Save username to localStorage
@@ -835,6 +1626,7 @@
         currentUser = username;
         currentUserAvatar.textContent = username.charAt(0).toUpperCase();
         currentUsernameDisplay.textContent = username;
+        profileName.textContent = username;
         
         // Switch to app interface
         loginSection.style.display = "none";
@@ -844,6 +1636,14 @@
         loadPosts();
         loadFriendRequests();
         loadFriendsList();
+        loadConversations();
+        loadProfile();
+        initEmojiPicker();
+        
+        // Generate random cover photo color
+        const colors = ['#1877f2', '#42b72a', '#f5533d', '#f5a623', '#8e44ad'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        profileCover.style.backgroundColor = randomColor;
       } catch (error) {
         console.error("Error starting chat:", error);
         showError(error.message);
@@ -857,93 +1657,279 @@
       return snapshot.exists();
     }
 
-    // Handle User Search
-    function handleSearch() {
-      clearTimeout(searchTimeout);
-      
-      const searchTerm = searchInput.value.trim();
-      
-      if (!searchTerm) {
-        searchResults.style.display = "none";
-        return;
-      }
-      
-      // Show loading state
-      searchResults.innerHTML = '<div class="spinner"></div>';
-      searchResults.style.display = "block";
-      
-      // Debounce the search
-      searchTimeout = setTimeout(async () => {
-        try {
-          // Get all users
-          const usersSnapshot = await get(ref(db, 'users'));
+    // Search for people
+    async function searchPeople(searchTerm) {
+      try {
+        const usersRef = ref(db, 'users');
+        const snapshot = await get(usersRef);
+        
+        peopleResults.innerHTML = '';
+        
+        if (snapshot.exists()) {
           const users = [];
           
-          usersSnapshot.forEach((childSnapshot) => {
+          snapshot.forEach((childSnapshot) => {
             const username = childSnapshot.key;
-            if (username !== currentUser && username.toLowerCase().includes(searchTerm.toLowerCase())) {
+            if (username.toLowerCase().includes(searchTerm.toLowerCase()) && username !== currentUser) {
               users.push({
                 username: username,
-                createdAt: childSnapshot.val().createdAt
+                bio: childSnapshot.val().bio || "No bio yet"
               });
             }
           });
           
-          // Sort by creation date (newest first)
-          users.sort((a, b) => b.createdAt - a.createdAt);
-          
-          // Display results
           if (users.length > 0) {
-            searchResults.innerHTML = '';
             users.forEach(user => {
-              const userElement = document.createElement("div");
-              userElement.className = "user-result";
-              userElement.innerHTML = `
-                <div class="user-result-avatar">${user.username.charAt(0).toUpperCase()}</div>
-                <div>${user.username}</div>
-                <button class="add-friend-btn" data-username="${user.username}" style="margin-left: auto; background: var(--primary); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 12px;">
-                  Add Friend
-                </button>
+              const personElement = document.createElement("div");
+              personElement.className = "person";
+              personElement.innerHTML = `
+                <div class="person-avatar">${user.username.charAt(0).toUpperCase()}</div>
+                <div class="person-info">
+                  <div class="person-name">${user.username}</div>
+                  <div class="person-bio">${user.bio}</div>
+                </div>
+                <button class="add-friend-btn" data-username="${user.username}">Add Friend</button>
               `;
-              userElement.addEventListener("click", () => startChatWithUser(user.username));
-              searchResults.appendChild(userElement);
+              peopleResults.appendChild(personElement);
               
-              // Add event listener to the add friend button
-              const addFriendBtn = userElement.querySelector(".add-friend-btn");
-              addFriendBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                sendFriendRequest(user.username);
-              });
+              // Add event listener to add friend button
+              const addFriendBtn = personElement.querySelector(".add-friend-btn");
+              addFriendBtn.addEventListener("click", () => sendFriendRequest(user.username));
             });
           } else {
-            searchResults.innerHTML = '<div class="status-message">No users found</div>';
+            peopleResults.innerHTML = `
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="fas fa-user-friends"></i>
+                </div>
+                <h3>No results found</h3>
+                <p>Try a different search term</p>
+              </div>
+            `;
           }
-        } catch (error) {
-          console.error("Error searching users:", error);
-          searchResults.innerHTML = '<div class="error-message">Error searching users</div>';
+        } else {
+          peopleResults.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="fas fa-user-friends"></i>
+              </div>
+              <h3>No users found</h3>
+              <p>Try a different search term</p>
+            </div>
+          `;
         }
-      }, 300); // 300ms debounce delay
+      } catch (error) {
+        console.error("Error searching people:", error);
+        peopleResults.innerHTML = '<div class="error-message">Error searching people</div>';
+      }
     }
 
     // Send Friend Request
     async function sendFriendRequest(toUsername) {
       try {
+        // Check if already friends
+        const isFriend = await checkIfFriends(toUsername);
+        if (isFriend) {
+          alert(`You are already friends with ${toUsername}`);
+          return;
+        }
+        
+        // Check if request already exists
+        const requestExists = await checkIfRequestExists(toUsername);
+        if (requestExists) {
+          alert(`Friend request already sent to ${toUsername}`);
+          return;
+        }
+        
+        // Create friend request
         const requestId = `${currentUser}_${Date.now()}`;
         
         await set(ref(db, `friendRequests/${toUsername}/${requestId}`), {
           from: currentUser,
-          to: toUsername,
           status: "pending",
           timestamp: Date.now()
         });
         
         alert(`Friend request sent to ${toUsername}`);
-        searchResults.style.display = "none";
-        searchInput.value = "";
       } catch (error) {
         console.error("Error sending friend request:", error);
         alert("Failed to send friend request");
       }
+    }
+
+    // Check if already friends
+    async function checkIfFriends(username) {
+      const friendsRef = ref(db, `friends/${currentUser}/${username}`);
+      const snapshot = await get(friendsRef);
+      return snapshot.exists();
+    }
+
+    // Check if friend request already exists
+    async function checkIfRequestExists(toUsername) {
+      const requestsRef = ref(db, `friendRequests/${toUsername}`);
+      const snapshot = await get(requestsRef);
+      
+      if (snapshot.exists()) {
+        let exists = false;
+        snapshot.forEach(childSnapshot => {
+          const request = childSnapshot.val();
+          if (request.from === currentUser && request.status === "pending") {
+            exists = true;
+          }
+        });
+        return exists;
+      }
+      return false;
+    }
+
+    // Load Profile Data
+    function loadProfile() {
+      if (!currentUser) return;
+      
+      // Remove previous listener if exists
+      if (profileListener) {
+        profileListener();
+      }
+      
+      const profileRef = ref(db, `users/${currentUser}`);
+      
+      profileListener = onValue(profileRef, (snapshot) => {
+        if (snapshot.exists()) {
+          userProfileData = snapshot.val();
+          
+          // Update profile info
+          profileName.textContent = userProfileData.username || currentUser;
+          profileBio.textContent = userProfileData.bio || "No bio yet";
+          
+          // Update profile picture
+          if (userProfileData.profilePicture) {
+            updateAvatarElements(currentUser, userProfileData.profilePicture);
+          } else {
+            updateAvatarElements(currentUser, null);
+          }
+          
+          // Load user's posts
+          loadUserPosts(currentUser);
+          
+          // Count friends
+          countFriends();
+        }
+      });
+    }
+
+    // Count user's friends
+    async function countFriends() {
+      try {
+        const friendsRef = ref(db, `friends/${currentUser}`);
+        const snapshot = await get(friendsRef);
+        
+        if (snapshot.exists()) {
+          friendCount.textContent = Object.keys(snapshot.val()).length;
+        } else {
+          friendCount.textContent = "0";
+        }
+      } catch (error) {
+        console.error("Error counting friends:", error);
+        friendCount.textContent = "0";
+      }
+    }
+
+    // Edit Profile
+    function editProfile() {
+      const newBio = prompt("Enter your bio:", userProfileData?.bio || "");
+      if (newBio !== null) {
+        update(ref(db, `users/${currentUser}`), {
+          bio: newBio
+        });
+      }
+    }
+
+    // Show Emoji Picker for Avatar
+    function showEmojiPicker() {
+      emojiPicker.style.display = "flex";
+    }
+
+    // Load Conversations
+    function loadConversations() {
+      if (!currentUser) return;
+      
+      conversationsList.innerHTML = '<div class="spinner"></div>';
+      
+      // Remove previous listener if exists
+      if (conversationsListener) {
+        conversationsListener();
+      }
+      
+      const conversationsRef = ref(db, `userChats/${currentUser}`);
+      
+      conversationsListener = onValue(conversationsRef, (snapshot) => {
+        conversationsList.innerHTML = '';
+        
+        if (snapshot.exists()) {
+          const conversations = [];
+          
+          snapshot.forEach((childSnapshot) => {
+            const chatId = childSnapshot.key;
+            const otherUser = chatId.replace(currentUser, '').replace('_', '');
+            const lastMessage = childSnapshot.val().lastMessage || '';
+            const timestamp = childSnapshot.val().timestamp || 0;
+            
+            conversations.push({
+              otherUser,
+              lastMessage,
+              timestamp
+            });
+          });
+          
+          // Sort by timestamp (newest first)
+          conversations.sort((a, b) => b.timestamp - a.timestamp);
+          
+          if (conversations.length > 0) {
+            conversations.forEach(conv => {
+              const convElement = document.createElement("div");
+              convElement.className = "conversation";
+              convElement.innerHTML = `
+                <div class="conversation-avatar">${conv.otherUser.charAt(0).toUpperCase()}</div>
+                <div class="conversation-info">
+                  <div class="conversation-name">${conv.otherUser}</div>
+                  <div class="conversation-preview">${formatLastMessage(conv.lastMessage)}</div>
+                </div>
+              `;
+              convElement.addEventListener("click", () => startChatWithUser(conv.otherUser));
+              conversationsList.appendChild(convElement);
+            });
+          } else {
+            conversationsList.innerHTML = `
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="far fa-comment-dots"></i>
+                </div>
+                <h3>No conversations</h3>
+                <p>Start chatting with your friends</p>
+              </div>
+            `;
+          }
+        } else {
+          conversationsList.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="far fa-comment-dots"></i>
+              </div>
+              <h3>No conversations</h3>
+              <p>Start chatting with your friends</p>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Format last message for preview
+    function formatLastMessage(message) {
+      if (!message) return "No messages yet";
+      if (message.length > 30) {
+        return message.substring(0, 30) + "...";
+      }
+      return message;
     }
 
     // Load Friend Requests
@@ -981,12 +1967,13 @@
               const requestElement = document.createElement("div");
               requestElement.className = "friend-request";
               requestElement.innerHTML = `
-                <div class="user-result-avatar">${request.from.charAt(0).toUpperCase()}</div>
+                <div class="user-avatar">${request.from.charAt(0).toUpperCase()}</div>
                 <div class="friend-info">
                   <div class="friend-name">${request.from}</div>
+                  <div class="friend-mutual">1 mutual friend</div>
                   <div class="friend-actions">
-                    <div class="friend-action accept-btn" data-request-id="${request.id}" data-from="${request.from}">Accept</div>
-                    <div class="friend-action reject-btn" data-request-id="${request.id}">Reject</div>
+                    <div class="friend-action accept-btn" data-request-id="${request.id}" data-from="${request.from}">Confirm</div>
+                    <div class="friend-action reject-btn" data-request-id="${request.id}">Delete</div>
                   </div>
                 </div>
               `;
@@ -996,8 +1983,14 @@
               const acceptBtn = requestElement.querySelector(".accept-btn");
               const rejectBtn = requestElement.querySelector(".reject-btn");
               
-              acceptBtn.addEventListener("click", () => acceptFriendRequest(request.id, request.from));
-              rejectBtn.addEventListener("click", () => rejectFriendRequest(request.id));
+              acceptBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                acceptFriendRequest(request.id, request.from);
+              });
+              rejectBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                rejectFriendRequest(request.id);
+              });
             });
           } else {
             friendRequestsContainer.innerHTML = `
@@ -1047,8 +2040,26 @@
           since: timestamp
         });
         
-        // Reload friends list
+        // Add to conversations for both users
+        const chatId = [currentUser, fromUsername].sort().join('_');
+        
+        await set(ref(db, `userChats/${currentUser}/${chatId}`), {
+          otherUser: fromUsername,
+          timestamp: timestamp
+        });
+        
+        await set(ref(db, `userChats/${fromUsername}/${chatId}`), {
+          otherUser: currentUser,
+          timestamp: timestamp
+        });
+        
+        // Reload friends list and conversations
         loadFriendsList();
+        loadConversations();
+        countFriends();
+        
+        // Show success message
+        alert(`You are now friends with ${fromUsername}`);
       } catch (error) {
         console.error("Error accepting friend request:", error);
         alert("Failed to accept friend request");
@@ -1096,9 +2107,10 @@
               const friendElement = document.createElement("div");
               friendElement.className = "friend-request";
               friendElement.innerHTML = `
-                <div class="user-result-avatar">${friend.username.charAt(0).toUpperCase()}</div>
+                <div class="user-avatar">${friend.username.charAt(0).toUpperCase()}</div>
                 <div class="friend-info">
                   <div class="friend-name">${friend.username}</div>
+                  <div class="friend-mutual">1 mutual friend</div>
                   <div class="friend-actions">
                     <div class="friend-action" style="background: var(--primary); color: white;" data-username="${friend.username}">Message</div>
                   </div>
@@ -1167,9 +2179,35 @@
         });
         
         postContent.value = "";
+        
+        // Update post count
+        countPosts();
       } catch (error) {
         console.error("Error creating post:", error);
         alert("Failed to create post");
+      }
+    }
+
+    // Count user's posts
+    async function countPosts() {
+      try {
+        const postsRef = ref(db, 'posts');
+        const snapshot = await get(postsRef);
+        
+        if (snapshot.exists()) {
+          let count = 0;
+          snapshot.forEach(childSnapshot => {
+            if (childSnapshot.val().author === currentUser) {
+              count++;
+            }
+          });
+          postCount.textContent = count;
+        } else {
+          postCount.textContent = "0";
+        }
+      } catch (error) {
+        console.error("Error counting posts:", error);
+        postCount.textContent = "0";
       }
     }
 
@@ -1217,8 +2255,19 @@
               const isLiked = post.likes && post.likes[currentUser];
               
               postElement.innerHTML = `
+                <div class="post-options">
+                  <i class="fas fa-ellipsis-h"></i>
+                  <div class="post-options-menu">
+                    ${post.author === currentUser ? `
+                      <div class="post-options-item edit-post" data-post-id="${post.id}">Edit Post</div>
+                      <div class="post-options-item delete delete-post" data-post-id="${post.id}">Delete Post</div>
+                    ` : `
+                      <div class="post-options-item share-post" data-post-id="${post.id}">Share Post</div>
+                    `}
+                  </div>
+                </div>
                 <div class="post-header">
-                  <div class="user-result-avatar">${post.author.charAt(0).toUpperCase()}</div>
+                  <div class="user-avatar">${post.author.charAt(0).toUpperCase()}</div>
                   <div>
                     <div class="post-user">${post.author}</div>
                     <div class="post-time">${formatTime(post.timestamp)}</div>
@@ -1247,10 +2296,32 @@
               // Add event listeners to post actions
               const likeBtn = postElement.querySelector('[data-action="like"]');
               const commentBtn = postElement.querySelector('[data-action="comment"]');
+              const shareBtn = postElement.querySelector('[data-action="share"]');
               const commentsSection = postElement.querySelector('.post-comments');
+              const optionsBtn = postElement.querySelector('.post-options');
+              const optionsMenu = postElement.querySelector('.post-options-menu');
               
               likeBtn.addEventListener('click', () => toggleLike(post.id));
               commentBtn.addEventListener('click', () => toggleComments(post.id, commentsSection));
+              shareBtn.addEventListener('click', () => sharePost(post.id));
+              
+              // Show/hide options menu
+              optionsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                optionsMenu.style.display = optionsMenu.style.display === 'block' ? 'none' : 'block';
+              });
+              
+              // Add event listeners to options menu
+              if (post.author === currentUser) {
+                const editBtn = postElement.querySelector('.edit-post');
+                const deleteBtn = postElement.querySelector('.delete-post');
+                
+                editBtn.addEventListener('click', () => editPost(post.id, post.content));
+                deleteBtn.addEventListener('click', () => deletePost(post.id));
+              } else {
+                const shareBtn = postElement.querySelector('.share-post');
+                shareBtn.addEventListener('click', () => sharePost(post.id));
+              }
               
               // Load comments if any
               if (commentsCount > 0) {
@@ -1279,6 +2350,215 @@
             </div>
           `;
         }
+      });
+      
+      // Close options menu when clicking outside
+      document.addEventListener('click', () => {
+        document.querySelectorAll('.post-options-menu').forEach(menu => {
+          menu.style.display = 'none';
+        });
+      });
+    }
+
+    // Edit Post
+    function editPost(postId, currentContent) {
+      currentlyEditingPostId = postId;
+      editPostTextarea.value = currentContent;
+      editPostModal.style.display = "flex";
+    }
+
+    // Save Edited Post
+    async function saveEditedPost() {
+      if (!currentlyEditingPostId) return;
+      
+      const newContent = editPostTextarea.value.trim();
+      if (!newContent) {
+        alert("Post cannot be empty");
+        return;
+      }
+      
+      try {
+        await update(ref(db, `posts/${currentlyEditingPostId}`), {
+          content: newContent
+        });
+        
+        editPostModal.style.display = "none";
+        currentlyEditingPostId = null;
+      } catch (error) {
+        console.error("Error updating post:", error);
+        alert("Failed to update post");
+      }
+    }
+
+    // Delete Post
+    async function deletePost(postId) {
+      if (confirm("Are you sure you want to delete this post?")) {
+        try {
+          await remove(ref(db, `posts/${postId}`));
+          countPosts();
+        } catch (error) {
+          console.error("Error deleting post:", error);
+          alert("Failed to delete post");
+        }
+      }
+    }
+
+    // Share Post
+    async function sharePost(postId) {
+      try {
+        const postSnapshot = await get(ref(db, `posts/${postId}`));
+        if (postSnapshot.exists()) {
+          const post = postSnapshot.val();
+          const newPostId = `${currentUser}_${Date.now()}`;
+          
+          await set(ref(db, `posts/${newPostId}`), {
+            author: currentUser,
+            content: `Shared post from ${post.author}: ${post.content}`,
+            timestamp: Date.now(),
+            likes: {},
+            comments: {},
+            sharedFrom: post.author,
+            originalPostId: postId
+          });
+          
+          alert("Post shared successfully!");
+        }
+      } catch (error) {
+        console.error("Error sharing post:", error);
+        alert("Failed to share post");
+      }
+    }
+
+    // Load User's Posts for Profile
+    function loadUserPosts(username) {
+      if (!username) return;
+      
+      profilePosts.innerHTML = '<div class="spinner"></div>';
+      
+      const postsRef = ref(db, 'posts');
+      
+      onValue(postsRef, (snapshot) => {
+        profilePosts.innerHTML = '';
+        
+        if (snapshot.exists()) {
+          const userPosts = [];
+          
+          snapshot.forEach((childSnapshot) => {
+            const post = childSnapshot.val();
+            if (post.author === username) {
+              userPosts.push({
+                id: childSnapshot.key,
+                ...post
+              });
+            }
+          });
+          
+          // Sort by timestamp (newest first)
+          userPosts.sort((a, b) => b.timestamp - a.timestamp);
+          
+          if (userPosts.length > 0) {
+            userPosts.forEach(post => {
+              const postElement = document.createElement("div");
+              postElement.className = "post";
+              postElement.dataset.postId = post.id;
+              
+              // Count likes
+              const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+              // Count comments
+              const commentsCount = post.comments ? Object.keys(post.comments).length : 0;
+              
+              // Check if current user liked this post
+              const isLiked = post.likes && post.likes[currentUser];
+              
+              postElement.innerHTML = `
+                ${post.author === currentUser ? `
+                  <div class="post-options">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <div class="post-options-menu">
+                      <div class="post-options-item edit-post" data-post-id="${post.id}">Edit Post</div>
+                      <div class="post-options-item delete delete-post" data-post-id="${post.id}">Delete Post</div>
+                    </div>
+                  </div>
+                ` : ''}
+                <div class="post-header">
+                  <div class="user-avatar">${post.author.charAt(0).toUpperCase()}</div>
+                  <div>
+                    <div class="post-user">${post.author}</div>
+                    <div class="post-time">${formatTime(post.timestamp)}</div>
+                  </div>
+                </div>
+                <div class="post-content">
+                  ${post.sharedFrom ? `Shared from ${post.sharedFrom}:<br>` : ''}
+                  ${post.content}
+                </div>
+                <div class="post-actions">
+                  <div class="post-action ${isLiked ? 'active' : ''}" data-action="like">
+                    <i class="far fa-thumbs-up"></i> Like (${likesCount})
+                  </div>
+                  <div class="post-action" data-action="comment">
+                    <i class="far fa-comment"></i> Comment (${commentsCount})
+                  </div>
+                </div>
+                <div class="post-comments">
+                  <!-- Comments will be loaded here -->
+                </div>
+              `;
+              profilePosts.appendChild(postElement);
+              
+              // Add event listeners to post actions
+              const likeBtn = postElement.querySelector('[data-action="like"]');
+              const commentBtn = postElement.querySelector('[data-action="comment"]');
+              const commentsSection = postElement.querySelector('.post-comments');
+              
+              likeBtn.addEventListener('click', () => toggleLike(post.id));
+              commentBtn.addEventListener('click', () => toggleComments(post.id, commentsSection));
+              
+              // Add event listeners to options menu if it's the user's post
+              if (post.author === currentUser) {
+                const optionsBtn = postElement.querySelector('.post-options');
+                const optionsMenu = postElement.querySelector('.post-options-menu');
+                const editBtn = postElement.querySelector('.edit-post');
+                const deleteBtn = postElement.querySelector('.delete-post');
+                
+                optionsBtn.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  optionsMenu.style.display = optionsMenu.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                editBtn.addEventListener('click', () => editPost(post.id, post.content));
+                deleteBtn.addEventListener('click', () => deletePost(post.id));
+              }
+              
+              // Load comments if any
+              if (commentsCount > 0) {
+                loadComments(post.id, commentsSection);
+              }
+            });
+          } else {
+            profilePosts.innerHTML = `
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="far fa-newspaper"></i>
+                </div>
+                <h3>No posts yet</h3>
+                <p>When you create posts, they'll appear here</p>
+              </div>
+            `;
+          }
+        } else {
+          profilePosts.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="far fa-newspaper"></i>
+              </div>
+              <h3>No posts yet</h3>
+              <p>When you create posts, they'll appear here</p>
+            </div>
+          `;
+        }
+        
+        // Update post count
+        countPosts();
       });
     }
 
@@ -1340,7 +2620,10 @@
             commentElement.innerHTML = `
               <div class="comment-avatar">${comment.author.charAt(0).toUpperCase()}</div>
               <div class="comment-content">
-                <div class="comment-user">${comment.author}</div>
+                <div class="comment-header">
+                  <div class="comment-user">${comment.author}</div>
+                  <div class="comment-time">${formatTime(comment.timestamp)}</div>
+                </div>
                 <div class="comment-text">${comment.text}</div>
               </div>
             `;
@@ -1352,6 +2635,7 @@
         const addCommentDiv = document.createElement("div");
         addCommentDiv.className = "add-comment";
         addCommentDiv.innerHTML = `
+          <div class="user-avatar">${currentUser.charAt(0).toUpperCase()}</div>
           <input type="text" placeholder="Write a comment..." class="comment-input" />
           <button class="comment-submit">Post</button>
         `;
@@ -1405,21 +2689,33 @@
     // Format timestamp
     function formatTime(timestamp) {
       const date = new Date(timestamp);
-      return date.toLocaleString();
+      const now = new Date();
+      const diff = now - date;
+      
+      if (diff < 60000) { // Less than 1 minute
+        return "Just now";
+      } else if (diff < 3600000) { // Less than 1 hour
+        const minutes = Math.floor(diff / 60000);
+        return `${minutes}m ago`;
+      } else if (diff < 86400000) { // Less than 1 day
+        const hours = Math.floor(diff / 3600000);
+        return `${hours}h ago`;
+      } else {
+        return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+      }
     }
 
     // Start Chat with Selected User
     function startChatWithUser(username) {
       currentChatUser = username;
-      searchInput.value = "";
-      searchResults.style.display = "none";
       
       // Update UI
-      const chatHeader = document.querySelector(".chat-header-info");
-      chatHeader.innerHTML = `
-        <div class="user-avatar">${username.charAt(0).toUpperCase()}</div>
-        <span>Chatting with ${username}</span>
-      `;
+      chatHeaderAvatar.textContent = username.charAt(0).toUpperCase();
+      chatHeaderName.textContent = username;
+      chatHeaderStatus.textContent = "Online";
+      
+      // Show chat container
+      chatContainer.classList.add("active");
       
       // Clear chat area
       chatArea.innerHTML = "";
@@ -1434,6 +2730,20 @@
       
       // Set up real-time listener
       setupMessageListener();
+      
+      // Update conversation as active in the list
+      updateActiveConversation(username);
+    }
+
+    // Update active conversation in the list
+    function updateActiveConversation(username) {
+      const conversations = document.querySelectorAll('.conversation');
+      conversations.forEach(conv => {
+        conv.classList.remove('active');
+        if (conv.querySelector('.conversation-name').textContent === username) {
+          conv.classList.add('active');
+        }
+      });
     }
 
     // Load Previous Messages
@@ -1492,6 +2802,16 @@
       messageListener = onChildAdded(messagesRef, (snapshot) => {
         const message = snapshot.val();
         displayMessage(message.text, message.sender === currentUser ? "user" : "other", message.timestamp);
+        
+        // Update conversation last message
+        const chatId = getChatId();
+        const conversationRef = ref(db, `userChats/${currentUser}/${chatId}`);
+        
+        set(conversationRef, {
+          otherUser: currentChatUser,
+          lastMessage: message.text,
+          timestamp: message.timestamp
+        });
       });
     }
 
@@ -1563,6 +2883,14 @@
       
       if (friendRequestsListener) {
         friendRequestsListener();
+      }
+      
+      if (conversationsListener) {
+        conversationsListener();
+      }
+      
+      if (profileListener) {
+        profileListener();
       }
       
       // Clear local storage
